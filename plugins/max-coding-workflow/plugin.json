@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "max-coding-workflow",
+  "description": "A repo-first process for building software with an AI coding agent, made for builders who are not professional developers."
+}

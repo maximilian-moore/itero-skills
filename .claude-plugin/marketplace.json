@@ -1,0 +1,20 @@
+{
+  "name": "itero-skills",
+  "description": "Skills and workflows for building with AI as a non-developer, by Max Moore (Itero Digital)",
+  "owner": {
+    "name": "Max Moore",
+    "url": "https://itero-digital.com"
+  },
+  "plugins": [
+    {
+      "name": "max-coding-workflow",
+      "displayName": "Max's AI Coding Framework",
+      "source": "./plugins/max-coding-workflow",
+      "description": "A repo-first process for building software with an AI coding agent: kickoff interview, backlog, architecture with an ADR log, per-requirement plans, independent code review, and session checkpointing.",
+      "version": "1.0.0",
+      "license": "MIT",
+      "category": "workflow",
+      "keywords": ["workflow", "code-review", "planning", "backlog", "architecture", "vibe-coding"]
+    }
+  ]
+}
