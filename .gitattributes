@@ -1,0 +1,8 @@
+# Normalise every text file to LF inside the repository, whatever the editor
+# on the machine that wrote it does locally.
+* text=auto eol=lf
+
+# Shell scripts are the ones that actually break. A CRLF line ending turns the
+# shebang into "/usr/bin/env bash\r", which Linux and macOS cannot resolve:
+#   /usr/bin/env: 'bash\r': No such file or directory
+*.sh text eol=lf
