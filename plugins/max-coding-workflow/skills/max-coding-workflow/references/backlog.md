@@ -26,9 +26,10 @@ document nobody reads, and the whole thing quietly stops working.
 
 | ID | Title | Value | Effort | Status | Blocked by |
 |---|---|---|---|---|---|
-| BL-001 | User can log in with email | High | Med | done | - |
+| BL-001 | User can log in with email | High | Med | implemented | - |
 | BL-002 | Save a draft entry | High | Low | ready | BL-001 |
-| BL-004 | Export to CSV | Med | Low | idea | - |
+| BL-004 | Export to CSV | Med | Low | draft | - |
+| BL-007 | Share a link to an entry | Low | Med | idea | - |
 
 ## Known issues
 
@@ -37,15 +38,41 @@ document nobody reads, and the whole thing quietly stops working.
 | BUG-003 | Empty title crashes the save handler | Med | BL-002 | open |
 ```
 
-**Status values:**
-- `idea` - captured, not thought through, no requirement file yet
-- `ready` - requirement file written, acceptance tests defined, could be built today
-- `in-progress` - a branch exists
-- `done` - merged to main
-- `discarded` - decided against, kept with a one-line reason
+## Status: the six states
 
-Keep discarded items. The reason you rejected something is genuinely useful six months
-later when you consider it again.
+An item moves through these in order. The value of a small fixed vocabulary is that
+`/start` and `/implement` can act on it without asking you what anything means.
+
+| Status | Meaning | Requirement file | What moves it on |
+|---|---|---|---|
+| `idea` | Captured, not thought through | none | You decide it is worth building |
+| `draft` | Worth building, being specified | being written | Acceptance tests are written |
+| `ready` | Buildable today | complete | `/implement` picks it up |
+| `implementation` | A branch exists, work in flight | complete | The PR merges |
+| `implemented` | Merged to main | complete | nothing, it is finished |
+| `cancelled` | Dropped for good, not coming back | whatever exists | nothing, it is closed |
+
+The two states people skip are the two that matter.
+
+**`draft` is the thinking state.** It exists so that "I want this" and "I know what
+this is" are not the same row. An item sitting in `draft` is an open question about
+scope, and seeing three of them tells you the backlog is ahead of your thinking. Start
+the requirement file here; the item is not `ready` until its acceptance tests are
+written, because acceptance tests are where vague ideas fall apart.
+
+**`implementation` is the crash marker.** Set it when the branch is created, not when
+the work is done. If a session dies mid-feature, the next `/start` sees an item in
+`implementation` with no merged PR and knows to ask about it. Without that state, the
+half-finished branch is simply lost.
+
+`cancelled` replaces deleting the row. The item is dropped: it does not come back, it
+does not get re-ranked, and nothing in the process will surface it again. Keep the row
+and a one-line reason anyway, because why you decided against something is genuinely
+useful six months later, and it stops the same idea being re-litigated every quarter.
+
+Cancelled is a decision, not a parking space. If you might still want something, it
+stays an `idea` - that is what `idea` is for. Reaching for `cancelled` because an item
+is merely not urgent is how a backlog quietly loses work you meant to keep.
 
 ## Value and effort
 
@@ -63,14 +90,15 @@ comfortable fiction that six things are all the top priority.
 ## Dependencies
 
 The `Blocked by` column holds item IDs, not prose. Before starting any item, check it.
-If a blocker is not `done`, say so and offer the next unblocked item.
+If a blocker is not `implemented`, say so and offer the next unblocked item.
 
 Watch for circular dependencies when filling the initial backlog. If A blocks B and B
 blocks A, one of them is really two items and needs splitting.
 
 ## The requirement file
 
-Created when an item moves to `ready`, not before. Use
+Started when an item moves to `draft`, finished when it moves to `ready`. Not before:
+an `idea` with a requirement file is an idea you have over-invested in. Use
 `assets/templates/requirement.md`. It contains:
 
 - **What and why** - one paragraph, in user language
@@ -90,3 +118,8 @@ because writing it afterwards means writing it to match whatever got built.
 During Phase 5, when something out of scope surfaces, add it here with status `idea`
 and move on. That is the entire mechanism behind rule 1. It only works if adding an
 item is fast, so keep it to one line and do not stop to write a requirement file.
+
+`/plan` is what promotes an item from `idea` to `draft` to `ready`. `/implement` only
+ever picks up `ready` items, so an item that never gets planned never gets built. That
+is deliberate: it makes the cost of an unspecified idea visible instead of letting it
+be discovered halfway through the code.

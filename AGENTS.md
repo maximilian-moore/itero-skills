@@ -91,8 +91,10 @@ Do not claim an install succeeded that you did not verify.
 
 - Do not install every skill when the user asked for one.
 - Do not edit the user's config beyond what the install requires.
-- Do not install hooks globally. Hooks in this repository are per project by design,
-  and a skill installs its own hook into a target project when it needs one.
+- Do not register hooks by editing the user's global settings. Where a plugin ships a
+  hook it declares it in its own `plugin.json`, and that hook is written to stay silent
+  in repositories it does not apply to. For hosts without plugin hooks, copy the shell
+  fallback into the target project rather than into a global config.
 - Do not run install scripts without telling the user first.
 
 ---
@@ -110,6 +112,12 @@ actual work needs.
 
 ## Working on this repository
 
+**Do not run `max-coding-workflow` on this repository.** It is shipped from here, not
+practised here, and its artifacts (`project-status.md`, `backlog.md`, `docs/plans/`) must
+never be committed into it - a reader could not then tell the example from the product.
+`CLAUDE.md` at the repository root says the same thing and overrides any global
+instruction to load that skill every session.
+
 ### Layout
 
 ```
@@ -122,7 +130,7 @@ plugins/<plugin>/
   skills/<skill>/assets/           templates the skill copies into user projects
   skills/<skill>/scripts/          helper scripts the skill runs
   commands/                        slash commands, for tools that have them
-  hooks/                           optional per-project hooks
+  hooks/                           hooks: plugin-registered, plus a shell fallback
 install/                           one script per host tool
 docs/                              human documentation
 ```

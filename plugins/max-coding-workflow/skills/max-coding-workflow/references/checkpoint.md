@@ -62,7 +62,7 @@ In this order. Merging is not one action, it is a sequence, and the sequence is 
 1. Verify command passes
 2. Subagent review done, findings triaged, High and Medium fixed
 3. Human acceptance test written into the requirement file
-4. `backlog.md` updated: item to `done`, any new `BUG-XXX` rows added
+4. `backlog.md` updated: item to `implemented`, any new `BUG-XXX` rows added
 5. `architecture.md` updated if there was architecture impact
 6. `project-status.md` updated
 7. Commit the doc changes onto the feature branch

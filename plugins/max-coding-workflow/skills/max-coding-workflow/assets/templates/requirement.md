@@ -1,6 +1,6 @@
 # BL-XXX: [Title]
 
-Status: ready
+Status: draft | ready | implementation | implemented | cancelled
 Value: High | Medium | Low
 Effort: High | Medium | Low
 Blocked by: -

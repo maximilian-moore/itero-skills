@@ -56,6 +56,11 @@ echo "Installed for Claude Code ($WHERE)."
 if [ "$COPIED_CMDS" -eq 1 ]; then
   echo
   echo "Slash commands were copied to $BASE/commands/ unnamespaced, so names like"
-  echo "/plan and /review can collide with commands you already have. The marketplace"
-  echo "install avoids that by namespacing them as /<plugin>:<command>."
+  echo "/start, /plan and /review can collide with commands you already have. The"
+  echo "marketplace install avoids that by namespacing them as /<plugin>:<command>."
 fi
+echo
+echo "Note: hooks are not installed by this script. A plugin registers its hooks in"
+echo "the manifest, which the marketplace install reads and this one does not copy."
+echo "For max-coding-workflow that means the session-start hook will not fire; run"
+echo "/start at the top of each session instead, which does the same and more."

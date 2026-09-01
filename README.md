@@ -35,7 +35,10 @@ login flows is the real one. Context windows die. Files in git don't.
 
 - A kickoff interview that forces the four decisions which are cheap now and expensive
   later: where it runs, who can access it, where data lives, what it costs
-- A backlog split into a scannable index and per-item requirement files
+- A backlog split into a scannable index and per-item requirement files, with six
+  states an item moves through: idea, draft, ready, implementation, implemented,
+  cancelled
+- A session that opens by syncing the repo and telling you where you left off
 - An architecture file with a decision log, so a fresh session can reconstruct the why
 - One implementation plan per feature, approved before any code gets written
 - Independent code review with severity definitions that cannot be talked down
@@ -71,9 +74,22 @@ your-project/
 
 **Using it.** Start a project and say what you want to build. The skill sets up the
 repository, interviews you, builds the backlog, proposes an architecture, and then
-works one backlog item at a time. Four rituals repeat: kickoff, plan, review,
-checkpoint. In Claude Code they are slash commands. Elsewhere the agent runs them on
-its own at the right moment.
+works one backlog item at a time.
+
+Six rituals repeat. In Claude Code they are slash commands; elsewhere the agent runs
+them on its own at the right moment.
+
+| Ritual | When | What it does |
+|---|---|---|
+| `/start` | Opening a session | Fetches and pulls, reads the status and backlog, reports where you are, asks what next |
+| `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, UX |
+| `/plan` | Adding a requirement | Writes the requirement and the plan, moves the item to `ready` |
+| `/implement` | Building | Takes the top `ready` item through branch, code, verify, review, merge |
+| `/review` | Before merging | Independent subagent pass over the diff, findings triaged by severity |
+| `/checkpoint` | After merging | Status update, merge, handoff note |
+
+A typical day is `/start`, then `/implement`, then stop. `/start` also runs
+automatically as a session hook in Claude Code.
 
 ---
 
@@ -143,11 +159,12 @@ subagent in Claude Code. Where subagents are not available, its `references/revi
 gives fallbacks in order of preference. Reviewing one model's diff with a different
 model is a legitimate and often sharper version of that step.
 
-**Hooks are the exception.** The session-start hook shipped with
-`max-coding-workflow` is written for Claude Code and installs into a target project,
-not globally. Other tools have their own hook formats, Antigravity uses a `hooks.json`,
-so port it yourself or run the session-start steps by hand. The skill works without a
-hook; the hook just saves you the manual check.
+**Hooks are the exception.** `max-coding-workflow` ships a session-start hook that the
+Claude Code plugin registers for you, in Node so that it works on Windows as well as
+Unix. It prints nothing unless the repository is a framework project, which is what
+makes registering it globally safe. Other tools have their own hook formats, Antigravity
+uses a `hooks.json`, so copy the shell version in `hooks/` or just run `/start`. No
+skill here depends on its hook having fired.
 
 ---
 
@@ -158,7 +175,7 @@ hook; the hook just saves you the manual check.
 plugins/<plugin>/                  one folder per plugin
   skills/<skill>/SKILL.md          the canonical skill
   commands/                        slash commands, where supported
-  hooks/                           optional per-project hooks
+  hooks/                           session-start hook, Node plus a shell fallback
 install/                           one script per host tool
 docs/                              install guide and contributor notes
 AGENTS.md                          how an agent should install from this repo
