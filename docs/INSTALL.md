@@ -44,15 +44,19 @@ this way are namespaced, so they appear as
 claude plugin validate .
 ```
 
-**Hooks are not plugin hooks.** Where a skill ships one, it is per project. The
-`max-coding-workflow` session-start hook reads that project's `project-status.md`, so
-the skill installs it into the target repository during Phase 0 rather than registering
-it globally. That is deliberate: you do not want a project state block printing in
-unrelated repositories.
+**Hooks come with the plugin.** `max-coding-workflow` declares a SessionStart hook in
+its `plugin.json`, so installing the plugin installs the hook. There is nothing to copy
+and nothing to commit.
 
-Other tools use their own hook formats, Antigravity has a `hooks.json`, so the hook
-does not port automatically. Every skill here works without its hook. The hook only
-saves you a manual step.
+It does not print a project state block in unrelated repositories: the script exits
+silently unless the working directory is a git repository containing
+`project-status.md` or `backlog.md`. It is written in Node rather than bash, because
+hook commands run through the system shell and a `.sh` path does not execute on Windows.
+
+Other tools use their own hook formats, Antigravity has a `hooks.json`, so the hook does
+not port automatically. Copy `hooks/session-start.sh` into the project by hand there, or
+just type `/start`, which does everything the hook does and more. Every skill here works
+without its hook.
 
 ## OpenAI Codex
 
@@ -114,9 +118,16 @@ nested deeper, and that the YAML frontmatter parses.
 frontmatter is valid YAML and that the file is at `<skill-folder>/SKILL.md`, not
 nested deeper.
 
-**Slash commands collide.** The manual Claude Code install puts `plan.md` and
-`review.md` into your commands directory unnamespaced. If you already have commands by
-those names, use the marketplace install instead, or rename them.
+**Slash commands collide.** The manual Claude Code install copies every command file
+into your commands directory unnamespaced - for `max-coding-workflow` that is `start`,
+`kickoff`, `plan`, `implement`, `review` and `checkpoint`. If you already have commands
+by those names, use the marketplace install instead, which namespaces them, or rename
+them.
+
+**The session-start hook does not fire after a manual install.** Only the marketplace
+install registers it, because registration lives in the plugin manifest that the manual
+script does not copy. Type `/start` instead; it does everything the hook does and more.
+See "Hooks come with the plugin" above.
 
 **The agent skips the review step** (`max-coding-workflow`). It needs a way to run an
 independent pass. See the fallbacks in `references/review.md`. Do not let it

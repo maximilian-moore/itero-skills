@@ -59,5 +59,5 @@ echo "Restart Antigravity, then run /skills to confirm. Activation is implicit a
 echo "driven by the description field."
 echo
 echo "Note: hooks are not installed by this script. Antigravity uses its own hooks.json"
-echo "format. If a skill ships a session-start hook, port it yourself or run the"
-echo "session-start steps manually."
+echo "format. For max-coding-workflow, either port hooks/session-start.sh yourself or"
+echo "just run /start at the top of each session - it does the same reading and more."

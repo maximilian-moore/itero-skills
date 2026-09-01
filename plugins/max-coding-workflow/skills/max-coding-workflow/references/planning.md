@@ -2,7 +2,7 @@
 
 One plan per backlog item. Never a global plan for the whole project.
 
-The reason: priorities shift. Items get deprioritised, split, or discarded. A global
+The reason: priorities shift. Items get deprioritised, split, or cancelled. A global
 plan has to be maintained for work that may never happen, so it rots, and a rotten plan
 is worse than none because people still half-trust it. A per-item plan is written when
 the item is picked and thrown away when it merges. It cannot rot, because it does not
@@ -10,6 +10,28 @@ outlive the work.
 
 The durable cross-cutting decisions live in `architecture.md`. That is the difference:
 architecture persists, plans are disposable.
+
+---
+
+## What planning does to the item's status
+
+Planning is what moves a backlog item along, so update `backlog.md` as you go rather
+than at the end.
+
+- Item is `idea`: move it to `draft` before writing anything, then write the
+  requirement file at `docs/requirements/BL-XXX.md`. The requirement is the *what*, in
+  the user's language. Do not start the plan until it exists.
+- Requirement written and its acceptance tests defined: move the item to `ready`. That
+  is the state `/implement` looks for, and an item is not `ready` until a person could
+  tell from the file alone whether the built thing is correct.
+- Then write the implementation plan, which is the *how*.
+
+Requirement and plan are two files on purpose. The requirement outlives the work and
+is what the reviewer checks the diff against. The plan is thrown away when the item
+merges. Collapsing them means either losing the requirement or keeping stale plans.
+
+`/implement` sets the item to `implementation`; `/checkpoint` sets it to `implemented`.
+Neither is your job here.
 
 ---
 

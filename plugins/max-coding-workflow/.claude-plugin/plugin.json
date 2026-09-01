@@ -2,7 +2,7 @@
   "name": "max-coding-workflow",
   "displayName": "Max's AI Coding Framework",
   "description": "A repo-first process for building software with an AI coding agent, made for builders who are not professional developers.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Max Moore",
     "url": "https://itero-digital.com"
@@ -10,5 +10,20 @@
   "homepage": "https://github.com/maximilian-moore/itero-skills",
   "repository": "https://github.com/maximilian-moore/itero-skills",
   "license": "MIT",
-  "keywords": ["workflow", "code-review", "planning", "backlog", "architecture", "vibe-coding"]
+  "keywords": ["workflow", "code-review", "planning", "backlog", "architecture", "vibe-coding"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js\"",
+            "timeout": 10,
+            "statusMessage": "Reading project state..."
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -13,9 +13,15 @@
 
 <!--
 Value / Effort: High, Medium, Low. Not everything can be High value.
-Status: idea | ready | in-progress | done | discarded
+Status, in order: idea | draft | ready | implementation | implemented | cancelled
+  idea           captured, not thought through yet
+  draft          decided it is worth building; requirement file being written
+  ready          requirement file done, acceptance tests defined, buildable today
+  implementation a branch exists and it is being built
+  implemented    merged to main
+  cancelled      dropped for good; keep the row and a one-line reason why
 Blocked by: item IDs only, not prose.
-Detail lives in docs/requirements/BL-XXX.md, created when status becomes 'ready'.
+Detail lives in docs/requirements/BL-XXX.md, started at 'draft', finished at 'ready'.
 -->
 
 ## Known issues
@@ -24,7 +30,7 @@ Detail lives in docs/requirements/BL-XXX.md, created when status becomes 'ready'
 |---|---|---|---|---|
 | BUG-001 | [title] | Low | BL-001 | open |
 
-## Discarded
+## Cancelled
 
 | ID | Title | Why |
 |---|---|---|

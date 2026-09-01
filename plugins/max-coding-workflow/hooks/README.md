@@ -1,40 +1,85 @@
 # SessionStart hook
 
-Claude Code only. Other environments (Claude Desktop, Antigravity, Cursor) have no
-hook, which is why `SKILL.md` also tells the model to check repo state manually at the
-start of every session.
+Prints the current repo state into a new session so the model orients itself before
+doing anything: branch, upstream position, uncommitted changes, recent commits,
+`project-status.md`, and the backlog's `Next up` list.
 
-## Install
+It only reports. It never writes, commits, or changes anything.
 
-Do this automatically during Phase 0, and when resuming a project that does not have
-it yet. Show the user what you are adding before you write it.
+## Two files, two hosts
+
+| File | Used by | How it is installed |
+|---|---|---|
+| `session-start.js` | Claude Code | Registered automatically by the plugin |
+| `session-start.sh` | Anything with shell hooks | Copy it into the project by hand |
+
+`session-start.js` is the canonical one. It is Node rather than bash because plugin
+hook commands run through the system shell, and a `.sh` path silently fails to execute
+on Windows - which is exactly how this hook came to look like it worked while doing
+nothing. Node is always present, because the host that runs the hook runs on it.
+
+## Claude Code: nothing to install
+
+`.claude-plugin/plugin.json` declares it:
+
+```json
+"hooks": {
+  "SessionStart": [
+    {
+      "matcher": "startup|resume|clear",
+      "hooks": [
+        { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js\"" }
+      ]
+    }
+  ]
+}
+```
+
+Installing the plugin installs the hook, in every repository, with no per-project setup
+and nothing to commit.
+
+**It stays quiet where it is not wanted.** The script exits without printing anything
+unless the working directory is a git repository containing `project-status.md` or
+`backlog.md`. That check is what makes global registration safe: a project state block
+never appears in an unrelated repository, and there is no nag telling you to adopt the
+framework in repos where you have not chosen to.
+
+## Other tools
+
+Antigravity, Codex and Claude Desktop use different hook formats, or have none. There is
+no port that covers all of them, so the honest answer is: type `/start` instead. It does
+everything this hook does and more.
+
+If your tool does run shell hooks, copy the shell version into the project:
 
 ```bash
 mkdir -p .claude/hooks
-cp <skill>/hooks/session-start.sh .claude/hooks/session-start.sh
+cp <plugin>/hooks/session-start.sh .claude/hooks/session-start.sh
 chmod +x .claude/hooks/session-start.sh
 ```
 
-Then merge `settings-snippet.json` into `.claude/settings.json`. If the file already
-exists, merge the `hooks` key rather than overwriting the file, or you will wipe the
-user's other settings.
+Then register it in whatever format that tool uses. `settings-snippet.json` is provided
+for reference, but it is Claude-Code-shaped: it is the right answer only for a manual
+Claude Code install, where you merge its `hooks` key into `.claude/settings.json` rather
+than overwriting the file. Antigravity's `hooks.json` and Codex's configuration are
+different shapes and the snippet does not apply to them.
 
-Commit `.claude/settings.json` and `.claude/hooks/`. Committing them is the point:
-the hook then works on every machine the user clones to, with no per-machine setup.
-Keep `.claude/settings.local.json` out of git, that one is machine-specific.
+## The hook is never load-bearing
 
-## Verify
+Every tool here works without it, because `/start` does the same reading and more - it
+also fetches from the remote, pulls when it is safe to, and checks that the backlog and
+the status file agree. The hook is a convenience that front-loads the read; `/start` is
+the ritual. `SKILL.md` tells the model to run the `/start` steps regardless of whether
+a hook fired.
 
-Start a new session in the repo. You should see the PROJECT STATE block. If you do
-not, check that the script is executable and that the hook schema still matches the
-current Claude Code documentation, since hook configuration has changed between
-versions.
+## Verify it works
 
-## What it does
+Open a session in a repo that has a `project-status.md`. You should see the
+`PROJECT STATE` block. Open one in a repo that does not, and you should see nothing at
+all - that silence is the feature, not a failure.
 
-- Prints branch, uncommitted changes, and the last 10 commits
-- Prints `project-status.md` in full
-- Flags the status file as stale if the newest commit is more than a day newer than
-  the file's `Last updated` line
+To test the script directly:
 
-It only reports. It never writes, commits, or changes anything.
+```bash
+node plugins/max-coding-workflow/hooks/session-start.js
+```

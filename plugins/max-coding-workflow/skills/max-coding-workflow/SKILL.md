@@ -8,8 +8,9 @@ description: >
   implementation plans, subagent code review with bug triage, and session checkpointing so
   work survives a cleared context window. Use this skill whenever the user starts a new
   software or app project, resumes an existing one, or says things like "let's build X",
-  "new project", "what should I work on next", "review this PR", "plan this feature",
-  "update the project status", or "I want to make this repo public". Also use it whenever
+  "new project", "start a session", "where did I leave off", "what should I work on next",
+  "implement the next item", "review this PR", "plan this feature", "update the project
+  status", or "I want to make this repo public". Also use it whenever
   the user is vibe coding, working in Claude Code on a personal project, or asks how to
   structure an AI-assisted build. Do not skip it for small changes - small changes are
   where the process gets dropped and the repo rots.
@@ -64,18 +65,26 @@ trusting both. Link by ID instead.
 
 ## Every session starts the same way
 
-Before doing anything else:
+This is the `/start` ritual. Run it before anything else, whether or not the user typed
+the command:
 
-1. Run `git status` and `git log --oneline -10`. Know what branch you're on and what
-   happened last.
-2. Read `project-status.md`. If it doesn't exist, this is Phase 0.
-3. Compare the last commit date against the status file's `Last updated` line. If the
-   repo has moved and the status hasn't, say so and reconstruct it before continuing.
-4. State back to the user in two or three lines: where the project is, and what the
-   status file says the next step is. Then ask whether to proceed with it.
+1. `git status`, `git fetch --all --prune`, `git log --oneline -10`. Know what branch
+   you're on, what happened last, and whether the remote has moved.
+2. If the tree is clean and the branch is behind, `git pull --ff-only`. If there are
+   uncommitted changes, do not pull - report them and ask. Never open a session by
+   putting the user's work at risk.
+3. Read `project-status.md` and the `Next up` list in `backlog.md`. If neither exists,
+   this is Phase 0.
+4. Check for drift three ways: is the newest commit newer than the status file's
+   `Last updated` line; is an item stuck in `implementation` with no merged PR; do the
+   status file and the backlog disagree about the last merge. Say so before doing
+   anything else.
+5. State back to the user in two or three lines: where the project is, and what the
+   next step is. Then ask whether to proceed.
 
-If a SessionStart hook is installed, it does steps 1 and 3 automatically. Do the rest
-regardless. Hooks are not available in every tool, so never rely on one having run.
+A SessionStart hook does steps 1, 3 and part of 4 automatically where it is installed.
+Do the rest regardless, and never assume the hook ran - it is Claude Code only, and it
+stays silent in repositories that are not framework projects.
 
 ---
 
@@ -106,8 +115,10 @@ checkpoint that makes the phase survivable.
 
 This is the part that repeats. Follow it in order.
 
-**1. Pick the item.** Take the top item from Next up in `backlog.md`, or ask the user.
-Check its `Blocked by` field. If a blocker is unresolved, say so and pick the next one.
+**1. Pick the item.** This is `/implement`. Take the top `ready` item from Next up in
+`backlog.md`, or ask the user. Only `ready` items get built - an `idea` or a `draft` has
+no acceptance tests yet, so there is nothing to build against. Check its `Blocked by`
+field; if a blocker is not `implemented`, say so and pick the next one.
 
 **2. Write the implementation plan.** Follow `references/planning.md`. The plan is
 per-requirement, never global, because priorities shift and a global plan rots. Save it
@@ -117,6 +128,8 @@ to `docs/plans/BL-XXX-plan.md`.
 unapproved plan. This is the cheapest possible moment to catch a misunderstanding.
 
 **4. Branch.** `git checkout -b feat/BL-XXX-short-slug`. Never work directly on main.
+Set the item to `implementation` in `backlog.md` and commit that on the branch. That
+status is what lets a future session find work abandoned by a session that died.
 
 **5. Build.** Write the code and the automated tests together, not tests afterwards.
 Stay inside the plan's scope. Anything outside it goes to the backlog.
@@ -145,29 +158,52 @@ The user must be able to confirm the feature actually works without reading code
 Automated tests prove nothing broke. This proves something works.
 
 **11. Merge and checkpoint.** Follow `references/checkpoint.md`. Update
-`project-status.md`, mark the backlog item done, merge to main, then write a handoff
-note and recommend the user start a fresh session or `/clear`.
+`project-status.md`, move the backlog item to `implemented`, merge to main, then write a
+handoff note and recommend the user start a fresh session or `/clear`.
 
 The status update happens *before* the merge is called finished, and you are the one
 who owes it, because you are the one who merged.
 
 ---
 
+## The backlog states
+
+Six states, in order. Every ritual below reads or writes one of them, which is why the
+vocabulary is fixed and small.
+
+`idea` - captured, not thought through.
+`draft` - worth building, requirement file being written.
+`ready` - requirement and acceptance tests complete, buildable today.
+`implementation` - a branch exists and work is in flight.
+`implemented` - merged to main.
+`cancelled` - dropped for good, kept with a one-line reason why.
+
+`/plan` promotes `idea` to `draft` to `ready`. `/implement` only picks up `ready` and
+sets `implementation`. `/checkpoint` sets `implemented`. Full definitions and the
+reasoning are in `references/backlog.md`.
+
 ## Rituals and shortcuts
 
-Four steps in this process are rituals with their own instructions. In tools that
-support slash commands they are available as `/kickoff`, `/plan`, `/review` and
-`/checkpoint`. Where they are not, the reference files carry the same instructions.
+Six steps in this process are rituals with their own instructions. In tools that
+support slash commands they are available as `/start`, `/kickoff`, `/plan`,
+`/implement`, `/review` and `/checkpoint`. Where they are not, the reference files
+carry the same instructions.
 
 Either way, run the ritual yourself at the right moment without waiting to be asked.
 The user should not have to remember process mechanics while thinking about the
 product, and a step that depends on someone typing a command is a step that gets
 skipped.
 
+- start - open a session: sync, read status and backlog, report state, ask
 - kickoff - Phase 0 to 4 for a new project
-- plan - implementation plan for one backlog item
+- plan - requirement and implementation plan for one backlog item
+- implement - build one `ready` item end to end, through to merge
 - review - independent review of the current diff
 - checkpoint - status update, merge, handoff note
+
+A normal session is `/start`, then either `/plan` or `/implement`, then stop. Two
+backlog items in one session is usually one item too many: the second one is built on a
+context window already full of the first.
 
 ## Running in different tools
 
@@ -176,8 +212,10 @@ The phases, rules and artifacts are the same everywhere. Two things vary:
 - **Independent review.** Preferred: a subagent with the scoped brief in
   `references/review.md`. If the tool has no subagents, use the fallback in that file.
   Never skip the step and never let the reviewing pass be the one that wrote the code.
-- **Session start.** If hooks are available, install the one in `hooks/`. Otherwise do
-  the four manual steps above at the start of every session.
+- **Session start.** In Claude Code the plugin registers `hooks/session-start.js`
+  automatically, and it stays silent outside framework projects. Everywhere else, run
+  the `/start` steps above manually at the start of every session. Never skip them
+  because a hook might have run.
 
 Write nothing in this process that assumes a particular model or vendor. The user may
 run the same repo through several tools.
@@ -202,8 +240,7 @@ repo/
     verify.sh                  the gate: lint, build, test
     scan-secrets.sh            history scan before going public
   .claude/
-    settings.json              SessionStart hook registration
-    hooks/session-start.sh     injects repo state at session start
+    settings.json              project settings, if the project needs any
 ```
 
 Templates for all of these are in `assets/templates/`. Copy them, don't invent new

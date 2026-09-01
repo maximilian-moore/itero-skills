@@ -15,7 +15,7 @@ plugins/<plugin-name>/
     assets/         optional, templates the skill copies into user projects
     scripts/        optional, helpers the skill runs
   commands/         optional, one .md per slash command
-  hooks/            optional, per-project hooks plus an install note
+  hooks/            optional, hooks the plugin registers, plus a shell fallback
 ```
 
 Plugin name and skill name are usually the same. They differ only when one plugin
@@ -35,7 +35,9 @@ Keep the body small enough to stay in context for a whole session. Anything long
 phase-specific goes in `references/` and gets read when it is needed.
 
 Stay vendor-neutral. Write "if your tool supports hooks", not "in Claude Code". A skill
-here may run under Gemini or GPT.
+here may run under Gemini or GPT. Host-specific mechanics are allowed in `commands/`,
+`hooks/` and `install/` - just never in `SKILL.md` or `references/`, and the skill must
+still work with none of them present.
 
 ## 3. Register it
 
@@ -60,6 +62,31 @@ Copy an existing one and edit it.
 **`plugins/<plugin-name>/plugin.json`** - the Antigravity marker. Two fields, `name`
 and `description`, plus the schema line.
 
+**A hook, if the skill ships one.** Declare it in the same
+`.claude-plugin/plugin.json`, under a `hooks` key, and reference the script through
+`${CLAUDE_PLUGIN_ROOT}`:
+
+```json
+"hooks": {
+  "SessionStart": [
+    { "matcher": "startup|resume|clear",
+      "hooks": [ { "type": "command",
+                   "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js\"",
+                   "timeout": 10 } ] }
+  ]
+}
+```
+
+Two rules for any hook registered this way, both learned the hard way:
+
+- **Write it in Node, not bash.** Hook commands run through the system shell, and a
+  `.sh` path does not execute on Windows - it fails silently, which looks exactly like
+  a working hook. Ship a `.sh` alongside it only as a fallback for hosts without plugin
+  hooks.
+- **Make it silent by default and incapable of throwing.** A plugin hook runs in every
+  repository the user opens, so it must detect that it does not apply and print nothing,
+  and it must swallow its own errors. A hook that throws degrades every session.
+
 ## 4. Document it
 
 Add a row to the table at the top of `README.md`, and a section below it following the
@@ -74,8 +101,12 @@ it. That table is what people read first.
 claude plugin validate .
 python3 -c "import json;json.load(open('.claude-plugin/marketplace.json'))"
 bash -n install/*.sh
+node --check plugins/*/hooks/*.js                   # if the skill ships a Node hook
 ./install/install-codex.sh <skill-name> --project   # in a scratch directory
 ```
+
+If the skill ships a hook, run it by hand in two scratch directories: one where the
+skill applies, and one where it does not. The second must produce no output at all.
 
 Test the trigger for real: start a session in a scratch project and phrase a request
 the way a user would, without naming the skill. If it does not activate, the
