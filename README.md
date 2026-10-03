@@ -13,7 +13,8 @@ Built by [Max Moore](https://itero-digital.com).
 
 | Skill | What it does | Status |
 |---|---|---|
-| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.0.0 |
+| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.1.0 |
+| [`multi-agent-coding`](#multi-agent-coding-framework) | A collaborative, repo-first process for teams and multiple AI coding agents | v1.0.0 |
 
 More are coming. Each one lives in its own folder and installs independently, so you
 can take one without taking all of them.
@@ -93,6 +94,50 @@ automatically as a session hook in Claude Code.
 
 ---
 
+### Multi-Agent Coding Framework
+
+`multi-agent-coding`
+
+Task claiming, orchestrator-worker delegation, anti-collision, continuous learnings,
+and cost tracking for teams and multiple AI coding agents working in one repository.
+
+The problem it solves: Multiple agents and human developers stepping on each other's
+branches, corrupting lockfiles, bloating the main chat context with compiler and test
+logs, repeating the same expensive debugging mistakes, and racking up untracked API costs.
+
+**What it gives you**
+
+- **Distributed branch locks:** Task claiming via `feat/BL-XXX-<owner>-<slug>` published to `origin`, preventing concurrent work collisions without central lock servers.
+- **Orchestrator-Worker pattern:** The main conversation acts as an orchestrator, delegating build loops to disposable worker subagents so the main context never bloats.
+- **Clean active backlog & archives:** Active items stay in `backlog.md` grouped by milestone. Merged items move to `docs/delivered.md` and dropped items to `docs/cancelled.md`.
+- **Repository playbook (`docs/learnings.md`):** Continuous knowledge harvesting at checkpoint time, ingested at session start so all agents share speedups and framework traps.
+- **Concurrency guardrails:** Pre-merge rebase gate, deterministic lockfile regeneration, migration sequence checks, and Git worktree guidelines for parallel local runs.
+- **Project velocity & cost metrics:** Automated PR diff and duration logging into `docs/project-metrics.md`, visualized with `./scripts/metrics-summary.sh`.
+
+**The seven rules**
+
+1. One PR equals one backlog item.
+2. Claim before code (publish remote branch lock before building).
+3. Rebase-clean merge gate (upstream rebase, clean lockfiles, verify passes).
+4. Orchestrate high, delegate low (worker subagents for code, orchestrator for coordination).
+5. Adversarial review pass (fresh context, security/data loss never low).
+6. Continuous knowledge harvesting (every PR checkpoint records learnings).
+7. Single source of truth (backlog active, completed archived, facts in one place).
+
+**The rituals**
+
+| Ritual | When | What it does |
+|---|---|---|
+| `/start` | Opening a session | Syncs remote, scans in-flight locks, checks stale claims, ingests learnings |
+| `/kickoff` | New project | Sets up repo, milestones, active backlog, architecture, and team conventions |
+| `/plan` | Adding a requirement | Requirement file + implementation plan with concurrency risk flags |
+| `/implement` | Building | Claims remote lock, dispatches worker subagent, runs verify gate |
+| `/review` | Before merging | Independent adversarial subagent review auditing security & race conditions |
+| `/checkpoint` | After merging | Upstream rebase, verify, delivered archive, learning harvest, metrics log |
+| `/metrics` | Any time | Displays velocity, agent contributions, and estimated token spend |
+
+---
+
 ## Install
 
 ### Claude Code
@@ -100,6 +145,7 @@ automatically as a session hook in Claude Code.
 ```
 /plugin marketplace add maximilian-moore/itero-skills
 /plugin install max-coding-workflow@itero-skills
+/plugin install multi-agent-coding@itero-skills
 ```
 
 Updates arrive when a version is bumped. `/plugin marketplace update itero-skills`

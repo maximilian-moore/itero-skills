@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "multi-agent-coding",
+  "description": "A collaborative, repo-first process for teams and multiple AI coding agents: task claiming, orchestrator-worker delegation, anti-collision, continuous learnings, and cost tracking."
+}
