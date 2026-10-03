@@ -15,6 +15,16 @@
       "license": "MIT",
       "category": "workflow",
       "keywords": ["workflow", "code-review", "planning", "backlog", "architecture", "vibe-coding"]
+    },
+    {
+      "name": "multi-agent-coding",
+      "displayName": "Multi-Agent Coding Framework",
+      "source": "./plugins/multi-agent-coding",
+      "description": "A collaborative, repo-first process for teams and multiple AI coding agents: task claiming, orchestrator-worker delegation, anti-collision, continuous learnings, and cost tracking.",
+      "version": "1.0.0",
+      "license": "MIT",
+      "category": "workflow",
+      "keywords": ["workflow", "multi-agent", "orchestration", "collaboration", "code-review", "planning", "backlog", "learnings", "metrics"]
     }
   ]
 }
