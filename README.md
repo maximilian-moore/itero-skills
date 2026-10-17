@@ -13,7 +13,7 @@ Built by [Max Moore](https://itero-digital.com).
 
 | Skill | What it does | Status |
 |---|---|---|
-| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.2.0 |
+| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.3.0 |
 | [`multi-agent-coding`](#multi-agent-coding-framework) | A collaborative, repo-first process for teams and multiple AI coding agents | v1.0.0 |
 
 More are coming. Each one lives in its own folder and installs independently, so you
@@ -88,8 +88,9 @@ them on its own at the right moment.
 | `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, two reviews, merge |
 | `/review` | Before merging | Two independent subagent rounds over the diff, findings triaged and fixed after each |
 | `/checkpoint` | After merging | Status update, merge the pull request, sync with GitHub, handoff note |
+| `/handover` | Ending a session | Status true and pushed, writes `docs/handover.md`, prints a short restart prompt for a fresh session |
 
-A typical day is `/start`, then `/implement`, then stop. `/start` also runs
+A typical day is `/start`, then `/implement`, then `/handover`. `/start` also runs
 automatically as a session hook in Claude Code.
 
 ---

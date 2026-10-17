@@ -11,7 +11,8 @@ with any new `BUG-XXX` rows, and `architecture.md` carries any new ADR.
 Merge through the pull request (`gh pr merge --squash --delete-branch`), never by merging
 into main locally. Then pull main, so local and GitHub match.
 
-Then write a plain-language handoff note and recommend a fresh session.
+Then write a plain-language handoff note, run `/handover`, and recommend a fresh
+session.
 
 If nothing is ready to merge, do the status update alone, commit it and push it. A
 mid-session checkpoint is still worth doing, especially if the user is stopping for the
