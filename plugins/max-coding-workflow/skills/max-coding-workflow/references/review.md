@@ -1,6 +1,6 @@
-# Phase 5, step 8: Code review
+# Phase 5, steps 9 and 10: Code review
 
-Two passes, and they catch different things.
+A self-check, then two independent review rounds, each followed by fixes.
 
 **The self-check** happens in the main context. Reread your own diff against the
 requirement. This is cheap and it does find real mistakes: forgotten error handling,
@@ -15,6 +15,24 @@ is the entire point, and it is why the brief below is deliberately narrow.
 
 A subagent rather than a new session, because findings need to come back into the main
 context, where the design discussion still exists and can inform how to fix them.
+
+## Two rounds, always
+
+Round 1 reviews the pull request as built. Its findings are triaged and fixed, verify
+runs again, and the fixes are pushed.
+
+Round 2 is a new subagent with the same brief and the updated diff. It gets nothing
+from round 1: no findings list, no "please check these were fixed". Two reasons. Fixes
+are fresh code written under time pressure and they carry their own bugs. And a reviewer
+told what to look for looks only there, so it loses the property that made round 1
+worth running.
+
+Run round 2 even when round 1 found nothing serious. A quiet first round is not proof;
+it is one reader's opinion.
+
+After round 2: if a High is still open, fix it and run another round. After three rounds
+with an open High, stop and ask the user, as in rule 4. Otherwise, triage, fix, verify,
+push, and move on to the acceptance test.
 
 ---
 
@@ -135,7 +153,9 @@ Triage happens in the main context, not in the subagent.
 4. Everything unfixed goes to the Known issues table in `backlog.md` as `BUG-XXX`,
    with severity, the item it was found in, and enough description to act on later.
 5. After fixes, run the verify command again. Fixes break things too.
-6. Report to the user: what was found, what was fixed, what was deferred and why.
+6. Commit the fixes and push them to the pull request branch.
+7. Report to the user per round: what was found, what was fixed, what was deferred and
+   why.
 
 Never merge with an open High finding. Never silently drop a finding because it was
 inconvenient. If a High finding is genuinely wrong, say so explicitly in the report

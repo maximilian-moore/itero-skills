@@ -1,5 +1,5 @@
 ---
-description: Build the top backlog item that is ready - branch, code, verify, review, checkpoint
+description: Build the top backlog item that is ready - branch, code, verify, pull request, two reviews, merge
 ---
 
 Run the Phase 5 build loop for one backlog item that is in status `ready`.
@@ -67,26 +67,34 @@ saw into the Gotchas section of `project-status.md` and ask the user how to proc
 
 Run the verify command. It must exit clean. Never ask for review on a red build.
 
-## 7. Self-check, then review
+## 7. Open the pull request
+
+```bash
+git push -u origin feat/BL-XXX-short-slug
+gh pr create --base main --title "BL-XXX: <title>" --body "<what changed, link to docs/requirements/BL-XXX.md>"
+```
+
+Without `gh`, give the user the link GitHub prints after the push.
+
+## 8. Self-check, then two review rounds
 
 Reread your own diff against the requirement file first - it is cheap and it catches
-real mistakes. Then run `/review`, which spawns the independent subagent pass and
-triages the findings. Fix High and Medium. Everything unfixed becomes a `BUG-XXX` row
-in Known issues.
+real mistakes. Then run `/review`: review round 1 by a fresh subagent, triage, fix High
+and Medium, verify, commit, push; then review round 2 by a new subagent on the updated
+diff, triage, fix, verify, commit, push. Everything unfixed becomes a `BUG-XXX` row in
+Known issues.
 
-Re-run verify after the fixes.
-
-## 8. Human acceptance test
+## 9. Human acceptance test
 
 Confirm the requirement file's Human acceptance test still matches what was built, and
 walk the user through it. Plain language, numbered steps, no jargon. Automated tests
 prove nothing broke; this proves something works.
 
-## 9. Checkpoint
+## 10. Checkpoint
 
 Run `/checkpoint`: update `project-status.md`, move the item to `implemented` in
-`backlog.md`, add any ADR, merge, then write the handoff note and recommend a fresh
-session.
+`backlog.md`, add any ADR, push, merge the pull request, pull main, then write the
+handoff note and recommend a fresh session.
 
 Report at the end: what was built, what the review found, what was deferred to the
 backlog, and which items are still `ready`.
