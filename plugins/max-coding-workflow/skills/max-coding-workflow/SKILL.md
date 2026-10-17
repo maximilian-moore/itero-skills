@@ -38,13 +38,15 @@ When you notice something else worth fixing, add it to the backlog. Do not put i
 the current diff. Sprawling PRs cannot be reviewed properly, and a bad review is worse
 than no review because it creates false confidence.
 
-**2. Nothing merges until all four are true.**
+**2. Nothing merges until all five are true.**
 - The verify command passes (lint + build + tests)
-- A subagent code review has run and its findings are triaged
+- Two independent subagent review rounds have run, and their findings are triaged
 - A human acceptance test is written in plain language
 - `project-status.md` reflects the change
+- The work sits in an open pull request, and it merges through that pull request
 
-If any one is missing, the merge has not happened yet.
+If any one is missing, the merge has not happened yet. Nothing is merged into main
+locally and pushed; main only moves through a merged pull request.
 
 **3. Security and data loss are never Low.**
 A finding that touches secrets, authentication, user data, payments, or data deletion
@@ -141,25 +143,37 @@ review. Never ask for review on a red build.
 catches real mistakes, but it is not the review, because the model that wrote the code
 is the worst judge of whether the approach was right.
 
-**8. Subagent review.** Always. Follow `references/review.md`. The subagent gets a
+**8. Open the pull request.** Push the branch and open a pull request against main
+(`gh pr create`). Title: `BL-XXX: <title>`. The body links the requirement file and
+says what changed. From here on, every fix is a commit on this branch, pushed, so
+the pull request always shows the current state.
+
+**9. Review round 1, then fix.** Follow `references/review.md`. A subagent gets a
 scoped brief - the diff, the requirement file, `architecture.md`, and the checklist -
 and nothing from this conversation. That scoping is the whole point: it removes the
 reasoning that led to the design, so the reviewer judges the result instead of
-re-agreeing with the process.
-
-**9. Triage in the main context.** Findings come back here, where the full design
-discussion is still available. Classify each as High, Medium or Low using the
+re-agreeing with the process. Triage the findings here in the main context, where the
+design discussion is still available. Classify each as High, Medium or Low using the
 definitions in `references/review.md`. Fix all High and Medium. Fix Low only if the
-fix is small and stays inside files already in the diff. Everything unfixed goes to
-the Known issues section of `backlog.md` with an ID.
+fix is small and stays inside files already in the diff. Run verify, commit, push.
 
-**10. Write the human acceptance test.** Plain language, numbered steps, no jargon.
+**10. Review round 2, then fix.** Always, even when round 1 found little. A new
+subagent, with the same scoped brief and the updated diff, and nothing from round 1.
+Fixes introduce bugs of their own, and a second fresh reader catches what the first
+one missed. Triage and fix the same way, run verify, commit, push. If round 2 still
+finds a High, fix it and run another round; after three rounds with open Highs, stop
+and ask the user (rule 4). Everything unfixed after the last round goes to the Known
+issues section of `backlog.md` with an ID.
+
+**11. Write the human acceptance test.** Plain language, numbered steps, no jargon.
 The user must be able to confirm the feature actually works without reading code.
 Automated tests prove nothing broke. This proves something works.
 
-**11. Merge and checkpoint.** Follow `references/checkpoint.md`. Update
-`project-status.md`, move the backlog item to `implemented`, merge to main, then write a
-handoff note and recommend the user start a fresh session or `/clear`.
+**12. Merge and checkpoint.** Follow `references/checkpoint.md`. Update
+`project-status.md`, move the backlog item to `implemented`, commit and push those
+docs to the branch, then merge the pull request (`gh pr merge --squash --delete-branch`),
+switch to main and pull. Then write a handoff note and recommend the user start a
+fresh session or `/clear`.
 
 The status update happens *before* the merge is called finished, and you are the one
 who owes it, because you are the one who merged.
@@ -198,8 +212,8 @@ skipped.
 - kickoff - Phase 0 to 4 for a new project
 - plan - requirement and implementation plan for one backlog item
 - implement - build one `ready` item end to end, through to merge
-- review - independent review of the current diff
-- checkpoint - status update, merge, handoff note
+- review - two independent review rounds over the current diff, each followed by fixes
+- checkpoint - status update, merge the pull request, sync with GitHub, handoff note
 
 A normal session is `/start`, then either `/plan` or `/implement`, then stop. Two
 backlog items in one session is usually one item too many: the second one is built on a
@@ -216,6 +230,10 @@ The phases, rules and artifacts are the same everywhere. Two things vary:
   automatically, and it stays silent outside framework projects. Everywhere else, run
   the `/start` steps above manually at the start of every session. Never skip them
   because a hook might have run.
+
+- **Pull requests.** Preferred: the `gh` CLI. Without it, push the branch and give the
+  user the pull request link to open and merge in the browser. If the repository has
+  no remote yet, set one up in Phase 0; the pull request is not optional.
 
 Write nothing in this process that assumes a particular model or vendor. The user may
 run the same repo through several tools.

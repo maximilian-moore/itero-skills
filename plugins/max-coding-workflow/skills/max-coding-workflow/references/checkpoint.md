@@ -1,4 +1,4 @@
-# Phase 5, step 11: Checkpoint, merge, handoff
+# Phase 5, step 12: Checkpoint, merge, handoff
 
 A checkpoint is the moment the repository catches up with the conversation. Everything
 useful that exists only in this context window gets written down, and then the context
@@ -60,17 +60,26 @@ problem is the most expensive thing an AI agent does.
 In this order. Merging is not one action, it is a sequence, and the sequence is the gate.
 
 1. Verify command passes
-2. Subagent review done, findings triaged, High and Medium fixed
+2. Both review rounds done, findings triaged, High and Medium fixed
 3. Human acceptance test written into the requirement file
 4. `backlog.md` updated: item to `implemented`, any new `BUG-XXX` rows added
 5. `architecture.md` updated if there was architecture impact
-6. `project-status.md` updated
-7. Commit the doc changes onto the feature branch
-8. Merge to main
-9. Delete the branch
+6. `project-status.md` updated, with the pull request number on the `Last merged` line
+7. Commit the doc changes onto the feature branch and push
+8. Merge the pull request: `gh pr merge --squash --delete-branch`
+9. `git checkout main && git pull --ff-only`, so the local main matches GitHub
 
 If step 6 has not happened, step 8 does not happen either. The merge is not finished
-until the repo describes itself accurately.
+until the repo describes itself accurately. Never merge into main locally and push it;
+main only moves through a merged pull request.
+
+## Sync with GitHub
+
+Every checkpoint ends with the repository in sync with GitHub: nothing committed only
+locally, nothing merged only locally. That includes mid-session checkpoints and
+documentation-only work - commit it, push it, and if it targets main, put it through a
+pull request. A laptop is not a backup, and the next session may run on another
+machine.
 
 ## The handoff note
 
@@ -111,5 +120,5 @@ Not every checkpoint follows a merge. Checkpoint whenever:
 - The user says they are stopping for the day
 
 The last one matters most. When a session ends mid-feature, write down what is
-half-done, what is on the branch, and what the next move was going to be. Half-finished
-work with no note is the single most confusing thing to return to.
+half-done, what is on the branch, and what the next move was going to be, then push the
+branch. Half-finished work with no note is the single most confusing thing to return to.
