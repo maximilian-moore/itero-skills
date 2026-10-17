@@ -31,10 +31,16 @@ Then decide, and say which you did and why:
 
 Read, in this order, and only what exists:
 
-1. `project-status.md` - where the project is and what the next step is.
-2. `backlog.md` - the `Next up` list, plus which items are `ready` and whether
+1. `docs/handover.md` - written at the end of the last session. Compare the commit hash
+   in its `Written at` line with `HEAD`. If commits were added since, say so: the
+   handover may be outdated, and the status file and git log win over it.
+2. `project-status.md` - where the project is and what the next step is.
+3. `backlog.md` - the `Next up` list, plus which items are `ready` and whether
    anything is stuck in `implementation`.
-3. The requirement file for the top `Next up` item, if one exists.
+4. The requirement file for the top `Next up` item, if one exists.
+
+Follow the handover's "Read first" list for anything beyond these, and respect its
+"Do not read in full" notes. They exist to keep the new session's context small.
 
 If there is no `project-status.md` and no `backlog.md`, this project is not set up yet.
 Say so and offer `/kickoff`.

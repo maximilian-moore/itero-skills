@@ -83,20 +83,21 @@ machine.
 
 ## The handoff note
 
-After merging, before recommending a fresh session, write two or three sentences of
-plain-language handoff to the user:
+After merging, write two or three sentences of plain-language handoff to the user:
 
 > Merged BL-002. You can now write an entry and it persists across a refresh.
 > Next up is BL-004, CSV export, which needs a plan first. One thing to watch: the
 > save handler does not yet validate empty titles, that is logged as BUG-003.
 > Good moment to start a fresh session.
 
-Then recommend `/clear` or a new session. The reason to give the user: a long context
-gets expensive and the model starts drifting from decisions made early on. A fresh
-session that reads the status file is more reliable than a tired one that remembers.
+Then run the handover in `references/handover.md`: it writes `docs/handover.md` and
+prints a short restart prompt for the next session. Recommend `/clear` or a new session
+after that. The reason to give the user: a long context gets expensive and the model
+starts drifting from decisions made early on. A fresh session that reads the status file
+and the handover is more reliable than a tired one that remembers.
 
-Only recommend it once the checkpoint is complete. Recommending a clear with an
-unwritten status is how work gets lost.
+Only recommend it once the checkpoint and the handover are complete. Recommending a
+clear with an unwritten status is how work gets lost.
 
 ## Staleness
 

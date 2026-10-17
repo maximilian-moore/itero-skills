@@ -94,7 +94,7 @@ prove nothing broke; this proves something works.
 
 Run `/checkpoint`: update `project-status.md`, move the item to `implemented` in
 `backlog.md`, add any ADR, push, merge the pull request, pull main, then write the
-handoff note and recommend a fresh session.
+handoff note, run `/handover`, and recommend a fresh session.
 
 Report at the end: what was built, what the review found, what was deferred to the
 backlog, and which items are still `ready`.

@@ -172,8 +172,8 @@ Automated tests prove nothing broke. This proves something works.
 **12. Merge and checkpoint.** Follow `references/checkpoint.md`. Update
 `project-status.md`, move the backlog item to `implemented`, commit and push those
 docs to the branch, then merge the pull request (`gh pr merge --squash --delete-branch`),
-switch to main and pull. Then write a handoff note and recommend the user start a
-fresh session or `/clear`.
+switch to main and pull. Then run the handover (`references/handover.md`) and
+recommend the user start a fresh session or `/clear`.
 
 The status update happens *before* the merge is called finished, and you are the one
 who owes it, because you are the one who merged.
@@ -198,9 +198,9 @@ reasoning are in `references/backlog.md`.
 
 ## Rituals and shortcuts
 
-Six steps in this process are rituals with their own instructions. In tools that
+Seven steps in this process are rituals with their own instructions. In tools that
 support slash commands they are available as `/start`, `/kickoff`, `/plan`,
-`/implement`, `/review` and `/checkpoint`. Where they are not, the reference files
+`/implement`, `/review`, `/checkpoint` and `/handover`. Where they are not, the reference files
 carry the same instructions.
 
 Either way, run the ritual yourself at the right moment without waiting to be asked.
@@ -213,9 +213,11 @@ skipped.
 - plan - requirement and implementation plan for one backlog item
 - implement - build one `ready` item end to end, through to merge
 - review - two independent review rounds over the current diff, each followed by fixes
-- checkpoint - status update, merge the pull request, sync with GitHub, handoff note
+- checkpoint - status update, merge the pull request, sync with GitHub
+- handover - end a session: status true and pushed, `docs/handover.md` written, a short
+  restart prompt printed for the next session
 
-A normal session is `/start`, then either `/plan` or `/implement`, then stop. Two
+A normal session is `/start`, then either `/plan` or `/implement`, then `/handover`. Two
 backlog items in one session is usually one item too many: the second one is built on a
 context window already full of the first.
 
@@ -254,6 +256,7 @@ repo/
     user-journey.md            personas, flows, screens, design tokens
     requirements/BL-XXX.md     full requirement + acceptance tests
     plans/BL-XXX-plan.md       disposable implementation plan
+    handover.md                end-of-session handover and restart prompt, overwritten
   scripts/
     verify.sh                  the gate: lint, build, test
     scan-secrets.sh            history scan before going public
