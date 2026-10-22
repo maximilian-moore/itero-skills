@@ -47,6 +47,8 @@ login flows is the real one. Context windows die. Files in git don't.
 - Design settled early: three design directions as pages you open in a browser, then
   an optional clickable prototype of the key flows, before any app code
 - One implementation plan per feature, approved before any code gets written
+- A test stack chosen with the architecture: unit and integration tests, and Playwright
+  end-to-end tests for the key flows of anything with a browser interface
 - Independent code review with severity definitions that cannot be talked down
 - A checkpoint after every merge, so you can stop mid-project without losing anything
 - Secrets handled properly from day one, and a history scan before you go public

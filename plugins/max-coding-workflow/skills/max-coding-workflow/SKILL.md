@@ -97,7 +97,7 @@ almost all your time in. Phase 6 happens when the user wants to publish.
 | 0 | Repo, .gitignore, secrets, verify command | `references/security.md` | Repo initialised, secrets explained to the user |
 | 1 | Kickoff interview - vision, users, constraints | `references/kickoff.md` | Feature list + the four retrofit answers |
 | 2 | Backlog built with IDs, value, effort, dependencies | `references/backlog.md` | `backlog.md` + ranked Next up list |
-| 3 | Architecture chosen and justified | `references/architecture.md` | `architecture.md` + first ADR entries |
+| 3 | Architecture and test stack chosen and justified | `references/architecture.md`, `references/testing.md` | `architecture.md` + first ADR entries, test stack in verify |
 | 4 | User journey, three design directions, prototype | `references/ux-flow.md` | `docs/user-journey.md` + chosen direction and tokens + optional prototype |
 | 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/requirement-review.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
 | 6 | Public readiness | `references/security.md` | History scanned, README, LICENSE |
@@ -131,7 +131,10 @@ Set the item to `implementation` in `backlog.md` and commit that on the branch. 
 status is what lets a future session find work abandoned by a session that died.
 
 **5. Build.** Write the code and the automated tests together, not tests afterwards.
-Stay inside the plan's scope. Anything outside it goes to the backlog.
+Each named test in the requirement (`BL-XXX-T01`) carries its ID in the test title. For
+a bug, the failing test comes first. Never weaken, skip or delete a test to get to
+green; see `references/testing.md`. Stay inside the plan's scope. Anything outside it
+goes to the backlog.
 
 **6. Verify.** Run the verify command. It must exit clean. If it doesn't, fix it before
 review. Never ask for review on a red build.

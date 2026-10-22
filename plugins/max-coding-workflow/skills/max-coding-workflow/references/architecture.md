@@ -29,6 +29,12 @@ For each significant choice, present it like this:
 Recommendation, alternatives, reason, tradeoff, exit. Every time. If the user does not
 have an opinion, your recommendation stands and gets logged as an ADR.
 
+## The test stack
+
+Propose it here, with the same recommendation, alternatives, reason and tradeoff, and
+log it as an ADR. Which levels of tests, which tools, and what each covers - for a web
+app usually Playwright for the key flows. Follow `references/testing.md`.
+
 ## What the four kickoff answers determine
 
 Map them directly, and say out loud that you are doing it:

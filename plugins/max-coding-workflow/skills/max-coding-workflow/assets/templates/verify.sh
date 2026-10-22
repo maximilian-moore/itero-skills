@@ -12,6 +12,11 @@ npm run typecheck
 echo "==> Tests"
 npm test
 
+# End-to-end tests, from the first screen on (references/testing.md). Never skip,
+# weaken or delete a test to get this green.
+# echo "==> End-to-end"
+# npx playwright test
+
 echo "==> Build"
 npm run build
 

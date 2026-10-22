@@ -55,6 +55,10 @@ The status is what tells a future session that this work exists.
 ## 5. Build
 
 Follow the plan. Write the code and its automated tests together, not tests afterwards.
+Each named test from the requirement carries its ID (`BL-XXX-T01`) in the test title,
+at the level the requirement gives, using the test stack in `architecture.md`. Never
+weaken, skip or delete a test to get to green; if that is the only way, stop and ask.
+See `references/testing.md`.
 
 Stay inside the plan's scope. Anything worth doing that is outside it becomes a new
 `idea` row in `backlog.md`, one line, and you move on. That is rule 1 and it is the

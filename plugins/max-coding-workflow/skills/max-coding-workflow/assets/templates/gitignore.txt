@@ -53,3 +53,6 @@ Thumbs.db
 # Test and coverage output
 coverage/
 .pytest_cache/
+test-results/
+playwright-report/
+evidence/
