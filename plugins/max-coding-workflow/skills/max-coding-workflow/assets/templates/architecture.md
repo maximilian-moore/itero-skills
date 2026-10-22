@@ -9,6 +9,9 @@ Last updated: YYYY-MM-DD
 **Access.** [Who can use it and how they authenticate]
 **Data.** [Where it lives, what the main entities are, how it is backed up]
 **Cost.** [Per month at zero users, and at realistic use]
+**Tests.** [Levels and tools, e.g. unit and integration with Vitest, end-to-end with
+Playwright for every key flow; how to run them; the seed data and the stand-ins for
+external services]
 
 ## Project structure
 

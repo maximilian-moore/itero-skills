@@ -101,7 +101,9 @@ npm run build
 
 By the end of the first feature PR this must run lint, a type or syntax check, and at
 least one real test. It is the gate in rule 2, and a gate that always passes is not a
-gate.
+gate. It grows with the test stack chosen in Phase 3 (`references/testing.md`):
+integration tests with the first database code, end-to-end tests with the first
+screen.
 
 ---
 

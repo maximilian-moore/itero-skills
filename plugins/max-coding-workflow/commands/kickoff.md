@@ -10,7 +10,7 @@ file only when you reach its phase:
 0. `references/security.md` - repo, .gitignore, secrets, verify command
 1. `references/kickoff.md` - the interview
 2. `references/backlog.md` - build the backlog
-3. `references/architecture.md` - propose and log the architecture
+3. `references/architecture.md` and `references/testing.md` - propose and log the architecture and the test stack
 4. `references/ux-flow.md` - journey, three design directions, prototype
 
 Stop for user confirmation at the end of each phase. Commit after each one.

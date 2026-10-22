@@ -54,10 +54,12 @@ what. Exact numbers.]
   down, no permission, the thing was deleted meanwhile. For each: what happens.]
 
 ## 9. Acceptance criteria (named tests)
-- `BL-XXX-T01` [Observable behaviour, not implementation]
-- `BL-XXX-T02` [At least one failure case]
-<!-- Numbered from T01 without gaps. Each ID appears in the title of the automated
-test that proves it, so a search finds it. Add new tests at the end. -->
+- `BL-XXX-T01` (end-to-end) [Observable behaviour, not implementation]
+- `BL-XXX-T02` (integration) [At least one failure case]
+<!-- Numbered from T01 without gaps. The level - unit, integration, end-to-end - comes
+from the test stack in architecture.md (references/testing.md). Each ID appears in the
+title of the automated test that proves it, so a search finds it. Add new tests at the
+end. Name the stand-ins for external services in section 5. -->
 
 ## 10. Human acceptance test
 [Numbered plain-language steps. No jargon. A person who has never seen the code should
