@@ -1,19 +1,16 @@
 ---
 name: max-coding-workflow
 description: >
-  Max's AI Coding Framework - a disciplined, repo-first process for building software
-  with an AI coding agent, made for builders who are not professional developers. Covers
-  repo and secrets setup, a grilling kickoff interview, backlog and requirement structure,
-  architecture decisions with an ADR log, user journey and design handoff, per-requirement
-  implementation plans, subagent code review with bug triage, and session checkpointing so
-  work survives a cleared context window. Use this skill whenever the user starts a new
-  software or app project, resumes an existing one, or says things like "let's build X",
-  "new project", "start a session", "where did I leave off", "what should I work on next",
-  "implement the next item", "review this PR", "plan this feature", "update the project
-  status", or "I want to make this repo public". Also use it whenever
-  the user is vibe coding, working in Claude Code on a personal project, or asks how to
-  structure an AI-assisted build. Do not skip it for small changes - small changes are
-  where the process gets dropped and the repo rots.
+  Max's AI Coding Framework - a repo-first process for building software with an AI
+  coding agent, for builders who are not professional developers. Covers repo and
+  secrets setup, a kickoff interview, backlog and requirements, architecture with an
+  ADR log, user journey and design, per-item plans, independent code review, and
+  checkpoints that survive a cleared context. Use it when the user starts or resumes a
+  software project, or says "let's build X", "new project", "start a session", "where
+  did I leave off", "what next", "implement the next item", "plan this feature",
+  "review this PR", "update the status" or "make this repo public". Also use it for
+  vibe coding or structuring an AI-assisted build. Do not skip it for small changes -
+  that is where the process gets dropped.
 ---
 
 # Max's AI Coding Framework
