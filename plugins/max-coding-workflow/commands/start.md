@@ -47,7 +47,7 @@ Say so and offer `/kickoff`.
 
 ## 3. Check for drift
 
-Three checks, because each one catches a different way a session goes wrong:
+Four checks, because each one catches a different way a session goes wrong:
 
 - **Stale status.** Compare the newest commit date against the `Last updated` line in
   `project-status.md`. If the repo has moved and the status has not, say so and offer to
@@ -55,8 +55,12 @@ Three checks, because each one catches a different way a session goes wrong:
 - **Abandoned branch.** If you are not on the main branch, or an item sits in
   `implementation` with no merged PR, report it. Half-finished work from a dead session
   is the most common thing lost between sessions.
+- **Waiting on the user.** An item in `implementation` whose PR is merged is waiting
+  for the user's check: remind the user, and point at its check sheet in
+  `docs/evidence/` if there is one. Report open entries in `docs/blockers.md`.
 - **Backlog and status disagree.** If `project-status.md` says the last merge was
-  BL-004 but `backlog.md` does not have BL-004 as `implemented`, one of them is wrong.
+  BL-004 but `backlog.md` has BL-004 neither as `implemented` nor as "merged, waiting
+for user check", one of them is wrong.
   Flag it rather than guessing.
 
 ## 4. Report and ask

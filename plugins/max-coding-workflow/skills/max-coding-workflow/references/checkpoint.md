@@ -60,9 +60,10 @@ problem is the most expensive thing an AI agent does.
 In this order. Merging is not one action, it is a sequence, and the sequence is the gate.
 
 1. Verify command passes
-2. Both review rounds done, findings triaged, High and Medium fixed
+2. The review rounds for the item's kind done, findings triaged, High and Medium fixed
 3. Human acceptance test written into the requirement file
-4. `backlog.md` updated: item to `implemented`, any new `BUG-XXX` rows added
+4. `backlog.md` updated: the item keeps `implementation` with the note "merged, waiting
+   for user check", any new `BUG-XXX` rows added
 5. `architecture.md` updated if there was architecture impact
 6. `project-status.md` updated, with the pull request number on the `Last merged` line
 7. Commit the doc changes onto the feature branch and push
@@ -72,6 +73,25 @@ In this order. Merging is not one action, it is a sequence, and the sequence is 
 If step 6 has not happened, step 8 does not happen either. The merge is not finished
 until the repo describes itself accurately. Never merge into main locally and push it;
 main only moves through a merged pull request.
+
+## After the merge: deploy and the user's check
+
+Merging is not deploying, and neither is done. Done is when the user has run the human
+acceptance test and it passed.
+
+1. Deploy main to the test environment, if the project has one (`docs/run-protocol.md`
+   names it). After an autonomous run, run the end-to-end tests against it and write
+   the check sheet, `docs/evidence/BL-XXX.md`; see `references/autonomous-run.md`.
+2. Ask the user to run the human acceptance test, and say what is in and what is out.
+3. **Passed:** move the item to `implemented` in `backlog.md`, record the result in the
+   check sheet if there is one, move confirmed choices out of `docs/blockers.md`,
+   commit, and push through a small pull request.
+4. **Bugs found:** each becomes a small fix (`Found in: BL-XXX`) with its own pull
+   request, deployed and checked again. The item stays in `implementation` until the
+   check passes.
+
+If merging means going live to real users because there is no test environment, the
+user checks before the merge instead: locally, or on a preview of the branch.
 
 ## Sync with GitHub
 

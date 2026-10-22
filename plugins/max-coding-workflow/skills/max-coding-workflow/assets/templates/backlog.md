@@ -18,8 +18,9 @@ Status, in order: idea | draft | ready | implementation | implemented | cancelle
   draft          decided it is worth building; requirement file being written
   ready          requirement file done, acceptance tests defined, buildable today;
                  for an autonomous run, the question rounds have ended
-  implementation a branch exists and it is being built
-  implemented    merged to main
+  implementation a branch exists and it is being built, or it is merged and waiting
+                 for the user's check (note "merged, waiting for user check")
+  implemented    merged to main and checked by the user
   cancelled      dropped for good; keep the row and a one-line reason why
 Blocked by: item IDs only, not prose.
 Detail lives in docs/requirements/BL-XXX.md, started at 'draft', finished at 'ready'.

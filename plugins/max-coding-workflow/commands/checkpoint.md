@@ -5,11 +5,16 @@ description: Update project status, merge the pull request, sync with GitHub, wr
 Read `references/checkpoint.md`.
 
 Work through the merge ritual in order. Do not merge until `project-status.md` is
-updated, the item is moved from `implementation` to `implemented` in `backlog.md` along
-with any new `BUG-XXX` rows, and `architecture.md` carries any new ADR.
+updated, the item carries the note "merged, waiting for user check" in `backlog.md`
+along with any new `BUG-XXX` rows, and `architecture.md` carries any new ADR.
 
 Merge through the pull request (`gh pr merge --squash --delete-branch`), never by merging
 into main locally. Then pull main, so local and GitHub match.
+
+After the merge, deploy to the test environment if there is one, and ask the user to
+run the human acceptance test. Only a passed check moves the item to `implemented`;
+bugs become small fixes and the check repeats. See "After the merge" in
+`references/checkpoint.md`.
 
 Then write a plain-language handoff note, run `/handover`, and recommend a fresh
 session.

@@ -1,5 +1,5 @@
 ---
-description: Build the top backlog item that is ready - branch, code, verify, pull request, two reviews, merge
+description: Build the top backlog item that is ready - branch, code, verify, pull request, reviews, merge, user check
 ---
 
 Run the Phase 5 build loop for one backlog item that is in status `ready`.
@@ -27,6 +27,11 @@ Then handle the edge cases before going further:
   `ready` before starting anything new.
 - **The top item has an unresolved `Blocked by`.** Skip it, say why, and offer the next
   unblocked one.
+
+If the top item is an autonomous run (`Run: autonomous` in its requirement), offer
+to print its run prompt instead, for a fresh session or `/goal`
+(`references/autonomous-run.md`). If the user wants it built here and now, continue
+below; the approved requirement replaces the plan approval in step 3.
 
 ## 2. Confirm the pick
 
@@ -80,13 +85,13 @@ gh pr create --base main --title "BL-XXX: <title>" --body "<what changed, link t
 
 Without `gh`, give the user the link GitHub prints after the push.
 
-## 8. Self-check, then two review rounds
+## 8. Self-check, then the review rounds
 
 Reread your own diff against the requirement file first - it is cheap and it catches
-real mistakes. Then run `/review`: review round 1 by a fresh subagent, triage, fix High
-and Medium, verify, commit, push; then review round 2 by a new subagent on the updated
-diff, triage, fix, verify, commit, push. Everything unfixed becomes a `BUG-XXX` row in
-Known issues.
+real mistakes. Then run `/review`, which picks the rounds by the item's kind: one
+correctness round for a small fix; for an autonomous run, correctness and security in
+parallel, fix, then a second correctness round on the updated diff, fix. Everything
+unfixed becomes a `BUG-XXX` row in Known issues.
 
 ## 9. Human acceptance test
 
@@ -96,8 +101,10 @@ prove nothing broke; this proves something works.
 
 ## 10. Checkpoint
 
-Run `/checkpoint`: update `project-status.md`, move the item to `implemented` in
-`backlog.md`, add any ADR, push, merge the pull request, pull main, then write the
+Run `/checkpoint`: update `project-status.md`, note "merged, waiting for user check"
+on the item in `backlog.md`, add any ADR, push, merge the pull request, pull main,
+deploy to the test environment if there is one. The user runs the human acceptance
+test; a pass moves the item to `implemented`, bugs become small fixes. Then write the
 handoff note, run `/handover`, and recommend a fresh session.
 
 Report at the end: what was built, what the review found, what was deferred to the

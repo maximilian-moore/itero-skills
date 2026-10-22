@@ -35,15 +35,21 @@ When you notice something else worth fixing, add it to the backlog. Do not put i
 the current diff. Sprawling PRs cannot be reviewed properly, and a bad review is worse
 than no review because it creates false confidence.
 
-**2. Nothing merges until all five are true.**
+**2. Nothing merges until all five are true, and nothing is done until the user checked it.**
 - The verify command passes (lint + build + tests)
-- Two independent subagent review rounds have run, and their findings are triaged
+- The independent review rounds for the item's kind have run, and their findings are
+  triaged: one round for a small fix, two rounds plus a security review for an
+  autonomous run (`references/review.md`)
 - A human acceptance test is written in plain language
 - `project-status.md` reflects the change
 - The work sits in an open pull request, and it merges through that pull request
 
 If any one is missing, the merge has not happened yet. Nothing is merged into main
 locally and pushed; main only moves through a merged pull request.
+
+Merged is not done. An item moves to `implemented` only when the user has run the human
+acceptance test and it passed. Until then it stays `implementation`, with the note
+"merged, waiting for user check".
 
 **3. Security and data loss are never Low.**
 A finding that touches secrets, authentication, user data, payments, or data deletion
@@ -53,7 +59,9 @@ is at minimum Medium severity, no matter how small the fix looks.
 After three failed attempts at the same problem, stop coding. Write what you tried and
 what you observed into `project-status.md` under Gotchas, then ask the user how to
 proceed. Looping burns tokens and quietly mangles the codebase, and a non-developer
-cannot easily tell flailing apart from progress.
+cannot easily tell flailing apart from progress. In an autonomous run, stop that part
+rather than the run: log it in `docs/blockers.md` and continue with what does not
+depend on it (`references/autonomous-run.md`).
 
 **5. Every fact lives in exactly one file.**
 Do not copy backlog detail into the status file, or architecture decisions into a
@@ -99,7 +107,7 @@ almost all your time in. Phase 6 happens when the user wants to publish.
 | 2 | Backlog built with IDs, value, effort, dependencies | `references/backlog.md` | `backlog.md` + ranked Next up list |
 | 3 | Architecture and test stack chosen and justified | `references/architecture.md`, `references/testing.md` | `architecture.md` + first ADR entries, test stack in verify |
 | 4 | User journey, three design directions, prototype | `references/ux-flow.md` | `docs/user-journey.md` + chosen direction and tokens + optional prototype |
-| 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/requirement-review.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
+| 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/requirement-review.md`, `references/autonomous-run.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
 | 6 | Public readiness | `references/security.md` | History scanned, README, LICENSE |
 
 Do not read all the reference files at once. Read the one for the phase you're in.
@@ -114,6 +122,12 @@ checkpoint that makes the phase survivable.
 
 This is the part that repeats. Follow it in order.
 
+An autonomous item follows the same loop, run unattended: the approved requirement
+replaces the plan approval in step 3, missing details follow the blocker protocol
+instead of a question, and the run ends with merge, deploy and a check sheet for the
+user. How to start and run one is in `references/autonomous-run.md`. A small fix
+follows the loop below with one review round.
+
 **1. Pick the item.** This is `/implement`. Take the top `ready` item from Next up in
 `backlog.md`, or ask the user. Only `ready` items get built - an `idea` or a `draft` has
 no acceptance tests yet, so there is nothing to build against. Check its `Blocked by`
@@ -124,7 +138,9 @@ per-requirement, never global, because priorities shift and a global plan rots. 
 to `docs/plans/BL-XXX-plan.md`.
 
 **3. Get approval.** Show the user the plan and wait. Do not start coding on an
-unapproved plan. This is the cheapest possible moment to catch a misunderstanding.
+unapproved plan. This is the cheapest possible moment to catch a misunderstanding. For
+an autonomous run that moment came earlier: the user approved the requirement before
+it became `ready`, so the run writes the plan and continues.
 
 **4. Branch.** `git checkout -b feat/BL-XXX-short-slug`. Never work directly on main.
 Set the item to `implementation` in `backlog.md` and commit that on the branch. That
@@ -152,28 +168,32 @@ the pull request always shows the current state.
 scoped brief - the diff, the requirement file, `architecture.md`, and the checklist -
 and nothing from this conversation. That scoping is the whole point: it removes the
 reasoning that led to the design, so the reviewer judges the result instead of
-re-agreeing with the process. Triage the findings here in the main context, where the
-design discussion is still available. Classify each as High, Medium or Low using the
-definitions in `references/review.md`. Fix all High and Medium. Fix Low only if the
-fix is small and stays inside files already in the diff. Run verify, commit, push.
+re-agreeing with the process. For an autonomous run, a second subagent reviews security
+in parallel. Triage the findings here in the main context, where the design discussion
+is still available. Classify each as High, Medium or Low using the definitions in
+`references/review.md`. Fix all High and Medium, each High with a test. Fix Low only
+if the fix is small and stays inside files already in the diff. Run verify, commit,
+push. A small fix stops here.
 
-**10. Review round 2, then fix.** Always, even when round 1 found little. A new
-subagent, with the same scoped brief and the updated diff, and nothing from round 1.
-Fixes introduce bugs of their own, and a second fresh reader catches what the first
-one missed. Triage and fix the same way, run verify, commit, push. If round 2 still
-finds a High, fix it and run another round; after three rounds with open Highs, stop
-and ask the user (rule 4). Everything unfixed after the last round goes to the Known
-issues section of `backlog.md` with an ID.
+**10. Review round 2, then fix.** Autonomous runs only, always, even when round 1 found
+little. A new subagent, with the correctness brief and the updated diff, checks that
+the fixes do what they claim. It should find no High. Fix all Medium and the easy
+Lows; a High means fix, test, and a short review of only that fix, and if it is still
+open, stop and ask the user (rule 4). Everything unfixed goes to the Known issues
+section of `backlog.md` with an ID.
 
 **11. Write the human acceptance test.** Plain language, numbered steps, no jargon.
 The user must be able to confirm the feature actually works without reading code.
 Automated tests prove nothing broke. This proves something works.
 
 **12. Merge and checkpoint.** Follow `references/checkpoint.md`. Update
-`project-status.md`, move the backlog item to `implemented`, commit and push those
-docs to the branch, then merge the pull request (`gh pr merge --squash --delete-branch`),
-switch to main and pull. Then run the handover (`references/handover.md`) and
-recommend the user start a fresh session or `/clear`.
+`project-status.md`, note "merged, waiting for user check" on the backlog item, commit
+and push those docs to the branch, then merge the pull request
+(`gh pr merge --squash --delete-branch`), switch to main and pull. Deploy to the test
+environment if there is one. Then the user runs the human acceptance test: passed
+moves the item to `implemented`; bugs become small fixes and the check repeats. Then
+run the handover (`references/handover.md`) and recommend the user start a fresh
+session or `/clear`.
 
 The status update happens *before* the merge is called finished, and you are the one
 who owes it, because you are the one who merged.
@@ -189,12 +209,13 @@ vocabulary is fixed and small.
 `draft` - worth building, requirement file being written.
 `ready` - requirement and acceptance tests complete, buildable today. For an
 autonomous run, the question rounds have also ended with no critical finding.
-`implementation` - a branch exists and work is in flight.
-`implemented` - merged to main.
+`implementation` - a branch exists and work is in flight, or it is merged and waiting
+for the user's check.
+`implemented` - merged to main and checked by the user.
 `cancelled` - dropped for good, kept with a one-line reason why.
 
 `/plan` promotes `idea` to `draft` to `ready`. `/implement` only picks up `ready` and
-sets `implementation`. `/checkpoint` sets `implemented`. Full definitions and the
+sets `implementation`. `/checkpoint` sets `implemented` once the user's check passed. Full definitions and the
 reasoning are in `references/backlog.md`.
 
 Every item is one of two kinds, and the kind sets how much planning it gets. A **small
@@ -220,8 +241,8 @@ skipped.
 - start - open a session: sync, read status and backlog, report state, ask
 - kickoff - Phase 0 to 4 for a new project
 - plan - requirement, question rounds and implementation plan for one backlog item
-- implement - build one `ready` item end to end, through to merge
-- review - two independent review rounds over the current diff, each followed by fixes
+- implement - build one `ready` item end to end, through to merge and the user's check
+- review - the independent review rounds for the item's kind, each followed by fixes
 - checkpoint - status update, merge the pull request, sync with GitHub
 - handover - end a session: status true and pushed, `docs/handover.md` written, a short
   restart prompt printed for the next session
@@ -270,6 +291,9 @@ repo/
     mockups/BL-XXX.html        mockup for an item's screens the prototype lacks, optional
     requirements/BL-XXX.md     full requirement + acceptance tests (or the short small-fix form)
     plans/BL-XXX-plan.md       disposable implementation plan
+    run-protocol.md            the rules every autonomous run follows
+    blockers.md                choices taken in runs, waiting for the user
+    evidence/BL-XXX.md         check sheet after a run: in, out, screenshots, result
     handover.md                end-of-session handover and restart prompt, overwritten
   prototype/                   clickable prototype of the key flows, optional
   scripts/

@@ -48,8 +48,8 @@ An item moves through these in order. The value of a small fixed vocabulary is t
 | `idea` | Captured, not thought through | none | You decide it is worth building |
 | `draft` | Worth building, being specified | being written | Acceptance tests are written; for an autonomous run, the question rounds end |
 | `ready` | Buildable today | complete | `/implement` picks it up |
-| `implementation` | A branch exists, work in flight | complete | The PR merges |
-| `implemented` | Merged to main | complete | nothing, it is finished |
+| `implementation` | A branch exists and work is in flight, or merged and waiting for the user's check | complete | The user's check passes |
+| `implemented` | Merged to main and checked by the user | complete | nothing, it is finished |
 | `cancelled` | Dropped for good, not coming back | whatever exists | nothing, it is closed |
 
 The two states people skip are the two that matter.

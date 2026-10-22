@@ -49,14 +49,19 @@ login flows is the real one. Context windows die. Files in git don't.
 - One implementation plan per feature, approved before any code gets written
 - A test stack chosen with the architecture: unit and integration tests, and Playwright
   end-to-end tests for the key flows of anything with a browser interface
-- Independent code review with severity definitions that cannot be talked down
+- Independent code review with severity definitions that cannot be talked down: one
+  round for a small fix; for an autonomous run, correctness and security in parallel,
+  then a second round that checks the fixes
+- Autonomous runs: a run prompt any tool can start (in Claude Code via `/goal`), a
+  blocker protocol instead of questions, merge and deploy, then a check sheet for your
+  human check before anything counts as done
 - A checkpoint after every merge, so you can stop mid-project without losing anything
 - Secrets handled properly from day one, and a history scan before you go public
 
 **The five rules**
 
 1. One pull request equals one backlog item. Everything else goes to the backlog.
-2. Nothing merges without: verify, two independent review rounds, human acceptance test, status update, a pull request.
+2. Nothing merges without: verify, independent review rounds, human acceptance test, status update, a pull request. Nothing is done until you checked it.
 3. Security and data loss are never rated low priority.
 4. Three failed attempts at the same problem, then stop and ask.
 5. Every fact lives in exactly one file. Duplicated docs drift and lie.
@@ -94,8 +99,8 @@ them on its own at the right moment.
 | `/start` | Opening a session | Fetches and pulls, reads the status and backlog, reports where you are, asks what next |
 | `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, design directions and prototype |
 | `/plan` | Adding a requirement | Writes the requirement, runs question rounds for autonomous runs, writes the plan, moves the item to `ready` |
-| `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, two reviews, merge |
-| `/review` | Before merging | Two independent subagent rounds over the diff, findings triaged and fixed after each |
+| `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, reviews, merge, your check |
+| `/review` | Before merging | Independent subagent rounds over the diff, by item kind, findings triaged and fixed after each |
 | `/checkpoint` | After merging | Status update, merge the pull request, sync with GitHub, handoff note |
 | `/handover` | Ending a session | Status true and pushed, writes `docs/handover.md`, prints a short restart prompt for a fresh session |
 

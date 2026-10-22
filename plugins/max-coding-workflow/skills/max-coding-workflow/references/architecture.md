@@ -35,6 +35,18 @@ Propose it here, with the same recommendation, alternatives, reason and tradeoff
 log it as an ADR. Which levels of tests, which tools, and what each covers - for a web
 app usually Playwright for the key flows. Follow `references/testing.md`.
 
+## Environments and the run protocol
+
+Decide where a change is checked before real users see it: a test environment that
+main deploys to, or, for a small project, a local run. Recommend a test environment
+whenever there will be users other than the builder; it is what lets an autonomous run
+merge and deploy while the user checks the result safely.
+
+Then copy `assets/templates/run-protocol.md` to `docs/run-protocol.md` and
+`assets/templates/blockers.md` to `docs/blockers.md`, and fill in the environments,
+the deploy command, the stand-ins for external services and the project's own rules.
+Every autonomous run reads them (`references/autonomous-run.md`).
+
 ## What the four kickoff answers determine
 
 Map them directly, and say out loud that you are doing it:

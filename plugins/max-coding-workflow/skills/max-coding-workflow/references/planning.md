@@ -47,6 +47,9 @@ than at the end.
   the question rounds. See "Screens not in the prototype" below.
 - Run the question rounds on an autonomous requirement (`references/requirement-review.md`).
   A small fix skips them.
+- For an autonomous run, show the user the requirement's scope (section 3), decisions
+  (section 4) and human acceptance test (section 10), and get an explicit OK. That OK
+  is the approval the run relies on: nobody approves a plan during the run.
 - Then move the item to `ready`. That is the state `/implement` looks for. A small fix
   is `ready` when a person could tell from the file alone whether the built thing is
   correct. An autonomous run is `ready` when, in addition, an agent could build it from
@@ -180,9 +183,13 @@ or a new deployment requirement? Any yes means the answer is not None.
 
 ## The approval gate
 
-Show the plan and stop. Do not begin coding.
+For a small fix: show the plan and stop. Do not begin coding.
 
-Ask specifically, not generally. "Does this look right?" gets a reflexive yes. Better:
+For an autonomous run, the gate is the requirement, approved before it became `ready`.
+Instead of a plan, print the run prompt from `references/autonomous-run.md` and
+recommend starting the run in a fresh session. The run writes its own plan.
+
+When you show a plan, ask specifically, not generally. "Does this look right?" gets a reflexive yes. Better:
 "Two things I would check: I am assuming entries are never edited after saving, and I
 am storing timestamps in UTC. Both fine?"
 
