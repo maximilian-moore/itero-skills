@@ -33,6 +33,10 @@ it says where everything lives, plus the few traps that can hit in any turn.
 `learnings.md` collects the lessons of every phase and run, read before planning
 (`references/learnings.md`).
 
+Copy `scripts/check-requirement.sh` from the skill to `scripts/` in the project. It
+checks requirement files for open choices, missing sections and test numbering
+(`references/requirement-review.md`).
+
 ## Phase 0.2 - .gitignore, and telling the user what it does
 
 Write the `.gitignore` from `assets/templates/gitignore.txt`, then **print a short

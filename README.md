@@ -89,6 +89,7 @@ your-project/
   scripts/
     verify.sh            the merge gate
     scan-secrets.sh      history scan before going public
+    check-requirement.sh warns about open choices and gaps in requirement files
 ```
 
 **Using it.** Start a project and say what you want to build. The skill sets up the
