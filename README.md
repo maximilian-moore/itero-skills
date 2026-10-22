@@ -39,6 +39,9 @@ login flows is the real one. Context windows die. Files in git don't.
 - A backlog split into a scannable index and per-item requirement files, with six
   states an item moves through: idea, draft, ready, implementation, implemented,
   cancelled
+- Two kinds of item: a small fix with a short requirement, and an autonomous run with
+  a requirement an agent can build from alone, checked by fresh-reader question rounds
+  before any code is written
 - A session that opens by syncing the repo and telling you where you left off
 - An architecture file with a decision log, so a fresh session can reconstruct the why
 - One implementation plan per feature, approved before any code gets written
@@ -84,7 +87,7 @@ them on its own at the right moment.
 |---|---|---|
 | `/start` | Opening a session | Fetches and pulls, reads the status and backlog, reports where you are, asks what next |
 | `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, UX |
-| `/plan` | Adding a requirement | Writes the requirement and the plan, moves the item to `ready` |
+| `/plan` | Adding a requirement | Writes the requirement, runs question rounds for autonomous runs, writes the plan, moves the item to `ready` |
 | `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, two reviews, merge |
 | `/review` | Before merging | Two independent subagent rounds over the diff, findings triaged and fixed after each |
 | `/checkpoint` | After merging | Status update, merge the pull request, sync with GitHub, handoff note |

@@ -13,6 +13,25 @@ architecture persists, plans are disposable.
 
 ---
 
+## Two kinds of item
+
+Decide this first, because it sets how much planning the item gets.
+
+**Small fix.** One visible change or one bug: a text, an alignment, a colour, a single
+wrong behaviour. About three files or fewer, no new data, no new rules or permissions.
+It gets the short requirement (`assets/templates/requirement-small.md`) and no question
+rounds. Writing it takes minutes, and the cost of a misunderstanding is small.
+
+**Autonomous run.** Everything else: a feature, a screen, a flow, a milestone. It gets
+the full requirement (`assets/templates/requirement.md`), written so an agent can build
+it alone for hours without asking, and question rounds check that before it is `ready`.
+
+When unsure, it is an autonomous run. A "small fix" that touches a database table, a
+permission or a second screen is not small. If a small fix grows while you write it,
+switch templates rather than stretching the short one.
+
+Record the kind in the file's `Run:` line.
+
 ## What planning does to the item's status
 
 Planning is what moves a backlog item along, so update `backlog.md` as you go rather
@@ -21,9 +40,16 @@ than at the end.
 - Item is `idea`: move it to `draft` before writing anything, then write the
   requirement file at `docs/requirements/BL-XXX.md`. The requirement is the *what*, in
   the user's language. Do not start the plan until it exists.
-- Requirement written and its acceptance tests defined: move the item to `ready`. That
-  is the state `/implement` looks for, and an item is not `ready` until a person could
-  tell from the file alone whether the built thing is correct.
+- For an autonomous run, check that its blockers are `implemented` before you write the
+  requirement. A requirement is checked against the code it builds on, so write it
+  right before the build, not weeks ahead.
+- Run the question rounds on an autonomous requirement (`references/requirement-review.md`).
+  A small fix skips them.
+- Then move the item to `ready`. That is the state `/implement` looks for. A small fix
+  is `ready` when a person could tell from the file alone whether the built thing is
+  correct. An autonomous run is `ready` when, in addition, an agent could build it from
+  the file alone without asking: the question rounds have ended with no critical
+  finding.
 - Then write the implementation plan, which is the *how*.
 
 Requirement and plan are two files on purpose. The requirement outlives the work and
@@ -81,12 +107,28 @@ What this explicitly does not do. Reference backlog IDs where they exist.
 
 ## Sizing
 
-If a plan lists more than roughly five or six files, or the steps run past about ten,
-the backlog item is too big. Split it, update `backlog.md` with the new IDs and their
-dependencies, and plan only the first piece.
+An item has to fit three limits: one review, one human check, and one working session.
+A run that is too big gets skimmed in review, leaves the user a check list nobody
+finishes, and runs out of budget halfway with the work half done.
 
-Large PRs are not reviewable, by a human or a subagent. A twenty-file diff gets skimmed
-and approved, which produces the illusion of review with none of the benefit.
+Suggest a split when any of these is true. They are signals, not hard limits; the user
+decides.
+
+- A small fix needs more than about three files. It is not a small fix.
+- The requirement file is above about 100 KB.
+- Section 9 has more than about 25 named tests.
+- The human acceptance test has more than about 15 steps.
+- The item touches more than two areas of the product, such as sign-in and payments
+  and the dashboard.
+- The build would not fit in one working session of a few hours.
+
+To split, cut along what the user can check on their own: each piece should be
+testable by a person without the next one. Update `backlog.md` with the new IDs and
+their `Blocked by`, and plan only the first piece.
+
+Large pull requests are not reviewable, by a human or a subagent. A diff nobody can
+hold in their head gets skimmed and approved, which produces the illusion of review
+with none of the benefit.
 
 ## The two test sections
 
@@ -94,7 +136,9 @@ They are different things and both are required.
 
 **Automated tests** are the regression net. They prove that what worked yesterday still
 works today. Write them with the code, not afterwards, because tests written afterwards
-are written to match whatever got built, including its bugs.
+are written to match whatever got built, including its bugs. Each named test in the
+requirement (`BL-XXX-T01` ...) puts its ID in the test's title, so a search shows that
+every criterion has a test.
 
 **The human acceptance test** is the proof that the feature is actually useful. Plain
 language, numbered steps, no jargon, no assumed knowledge. The user should be able to
