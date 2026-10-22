@@ -32,12 +32,17 @@ successful? An AI agent will build only the success case unless this is filled i
 | | | | |
 
 ## Design tokens
+Direction: [letter, name - docs/design/style.html, or "component library defaults"]
 Colours: background #, surface #, text #, muted #, accent #, danger #, success #
 Type:    [font]. Headings [weight], body [weight]. Sizes [/ / / /]
 Spacing: [base scale]
 Radius:  [cards / buttons]
 Library: [component library]
 Mode:    [dark / light / both]
+
+## Prototype
+[prototype/ - which flows it covers, or "none, mockups per item", or the design tool
+link. Screens are marked <!-- SCREEN: name --> so requirements can point at them.]
 
 ## Design tool prompt
 [The copy-paste block for Claude Design, Stitch, Figma or v0. Regenerate this whenever

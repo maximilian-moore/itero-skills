@@ -43,6 +43,8 @@ than at the end.
 - For an autonomous run, check that its blockers are `implemented` before you write the
   requirement. A requirement is checked against the code it builds on, so write it
   right before the build, not weeks ahead.
+- If the item has screens that the prototype does not cover, settle their look before
+  the question rounds. See "Screens not in the prototype" below.
 - Run the question rounds on an autonomous requirement (`references/requirement-review.md`).
   A small fix skips them.
 - Then move the item to `ready`. That is the state `/implement` looks for. A small fix
@@ -58,6 +60,26 @@ merges. Collapsing them means either losing the requirement or keeping stale pla
 
 `/implement` sets the item to `implementation`; `/checkpoint` sets it to `implemented`.
 Neither is your job here.
+
+## Screens not in the prototype
+
+The design direction is chosen once per project, in Phase 4. Do not ask about it again
+per item. What can be missing is a screen: the item adds one the prototype does not
+have, or there is no prototype.
+
+For an autonomous run with such a screen, ask, with the recommendation first:
+
+- **An HTML mockup** (recommended): `docs/mockups/BL-XXX.html`, in the project's design
+  tokens, with sample data and the screen's empty, loading and error states. Mark each
+  screen `<!-- SCREEN: name -->`, as in the prototype. It opens in any browser.
+- **A design tool prompt**, from the template in `references/ux-flow.md`.
+- **No mockup.** The build follows the tokens and the closest existing screen.
+
+Show the mockup and collect feedback before the question rounds start: the look is then
+settled, and section 6 of the requirement points at the mockup's screens. Getting a
+screen wrong in a mockup costs minutes; in built code it costs a second run.
+
+A small fix changes an existing screen, so it never needs a mockup.
 
 ---
 

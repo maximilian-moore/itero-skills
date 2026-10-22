@@ -101,7 +101,7 @@ almost all your time in. Phase 6 happens when the user wants to publish.
 | 1 | Kickoff interview - vision, users, constraints | `references/kickoff.md` | Feature list + the four retrofit answers |
 | 2 | Backlog built with IDs, value, effort, dependencies | `references/backlog.md` | `backlog.md` + ranked Next up list |
 | 3 | Architecture chosen and justified | `references/architecture.md` | `architecture.md` + first ADR entries |
-| 4 | User journey, screens, design tokens | `references/ux-flow.md` | `docs/user-journey.md` + design tool prompt |
+| 4 | User journey, three design directions, prototype | `references/ux-flow.md` | `docs/user-journey.md` + chosen direction and tokens + optional prototype |
 | 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/requirement-review.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
 | 6 | Public readiness | `references/security.md` | History scanned, README, LICENSE |
 
@@ -266,9 +266,12 @@ repo/
   docs/
     SETUP.md                   how to get each secret, per machine
     user-journey.md            personas, flows, screens, design tokens
+    design/style.html          the chosen design direction, as a page
+    mockups/BL-XXX.html        mockup for an item's screens the prototype lacks, optional
     requirements/BL-XXX.md     full requirement + acceptance tests (or the short small-fix form)
     plans/BL-XXX-plan.md       disposable implementation plan
     handover.md                end-of-session handover and restart prompt, overwritten
+  prototype/                   clickable prototype of the key flows, optional
   scripts/
     verify.sh                  the gate: lint, build, test
     scan-secrets.sh            history scan before going public
