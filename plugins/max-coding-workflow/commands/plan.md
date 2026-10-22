@@ -19,13 +19,17 @@ Then move the item through its states as you work:
 1. `idea` to `draft`, and write `docs/requirements/BL-XXX.md` - from
    `assets/templates/requirement-small.md` for a small fix, from
    `assets/templates/requirement.md` for an autonomous run. Commit the draft.
-2. For an autonomous run, run the question rounds in `references/requirement-review.md`:
+2. If an autonomous run has screens the prototype does not cover, offer a mockup
+   (`docs/mockups/BL-XXX.html`) as described in "Screens not in the prototype" in
+   `references/planning.md`, and settle the look before step 3. Do not ask about the
+   design direction again; it was chosen once, in Phase 4.
+3. For an autonomous run, run the question rounds in `references/requirement-review.md`:
    a fresh subagent per round, triage, one batch of questions to the user, commit per
    round, at most four rounds. In Claude Code, start each round's subagent with
    `model: "sonnet"`; the reading does not need the strongest model. A small fix skips
    this step.
-3. `draft` to `ready`.
-4. Write the plan to `docs/plans/BL-XXX-plan.md` using
+4. `draft` to `ready`.
+5. Write the plan to `docs/plans/BL-XXX-plan.md` using
    `assets/templates/implementation-plan.md` - the how.
 
 If the item is already `ready` its requirement file exists; reread it rather than

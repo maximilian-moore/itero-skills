@@ -71,8 +71,9 @@ Ask directly, and do not treat it as a formality if the answer is yes.
 4. How much does the interface matter? Is this a tool you tolerate, or something you
    want to show people?
 
-Question 4 routes Phase 4. If the interface matters, push toward a design tool. If it
-does not, say so plainly and save the user the effort.
+Question 4 routes Phase 4. If the interface matters, plan for three design directions
+and a prototype of the key flows before any app code. If it does not, say so plainly
+and save the user the effort.
 
 ## Block E - The future
 

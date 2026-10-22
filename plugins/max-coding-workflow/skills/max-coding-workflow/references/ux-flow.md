@@ -1,15 +1,21 @@
 # Phase 4: User journey and design
 
-Two things get decided here, and only two. Resist doing more.
+Three things get decided here, once per project:
 
-**Now, once:** the thin journey (who, what jobs, key flows) and the design tokens
-(colours, type, spacing, component library).
+1. **The thin journey** - who, what jobs, the key flows.
+2. **The design direction** - how the product looks and feels, chosen from three
+   directions the user can see in a browser, and written down as design tokens.
+3. **The prototype** - optional but recommended when the interface matters: the screens
+   of the key flows, clickable, in the chosen direction, before any app code exists.
 
-**Later, per feature:** detailed screen design.
+Why so early: a wrong look is cheap to change in a mockup and expensive to change in a
+built app. Every screen built on the wrong tokens has to be touched again. Getting the
+direction and the main screens right before Phase 5 is the cheapest design work in the
+whole project.
 
-Designing every screen upfront reintroduces exactly the waterfall problem that
-per-requirement implementation plans exist to avoid. You would be designing screens for
-features that get deprioritised. The journey document is stable. Screens are not.
+What stays out: screens for features that are not in the first release. Those get a
+mockup when their item is planned (`references/planning.md`), not now, because they may
+never be built.
 
 ---
 
@@ -43,15 +49,59 @@ This is the most commonly skipped section and the most common source of an app t
 feels broken. An AI agent will happily build only the success case unless told
 otherwise.
 
-## Design tokens
+## Does the interface actually matter?
 
-Decide these once, write them down, and reuse them everywhere. Without written tokens
-every new screen drifts and the app ends up with four greys and three button styles.
+Ask directly, then follow through, because the answer changes the rest of this phase.
+
+**If it does not matter** (personal tool, only the user sees it), say so plainly. Skip
+the directions and the prototype, pick a component library with its default look,
+write those defaults down as the tokens, and move on. Do not push a design process onto
+someone building a script with a form on top.
+
+**If it matters** (people other than the user will see it, or the user has firm ideas
+about how it should look), work through the two steps below.
+
+## Step 1: Three design directions
+
+Ask first what the user already has: brand colours, a logo, an app whose look they
+like, dark or light, playful or plain. Then offer the choice:
+
+- *"I have a design"* - use it. Write it down as tokens and build one showcase page
+  from it so both of you see the same thing.
+- *"Show me options"* - propose three directions.
+- *"You decide"* - pick one direction yourself that fits the users and the jobs, build
+  its showcase page, and say in one line why you chose it. The user can still change it.
+
+Three directions that are actually different. Three shades of the same blue is no
+choice. For each direction give:
+
+- a name and a one-line feel ("Calm and clear", "Bold and playful", "Dense and
+  professional")
+- the reference feel: one or two existing apps it resembles
+- the tokens: colours for light and dark, fonts, spacing base, radius, shadow
+- who it suits, and the trade-off
+
+Then build each as a page from `assets/templates/design-showcase.html`:
+`docs/design/direction-a.html`, `-b`, `-c`. The template shows the parts every app has -
+header and navigation, type sizes, buttons, cards, a form with an error, a table,
+success and error messages, a loading state, an empty state, light and dark mode. Change
+only its tokens block, its direction block and its sample words, which become the app's
+own screen names and objects. The layout stays the same on purpose: the user compares
+styles, not page structures.
+
+The user opens the three pages in a browser and answers: one of them, a mix ("the
+colours of A with the fonts of C"), or a style of their own. Build the mix as one more
+page and confirm it.
+
+When the direction is chosen, write its tokens into `docs/user-journey.md`. Without
+written tokens every new screen drifts, and the app ends up with four greys and three
+button styles.
 
 ```markdown
 ## Design tokens
+Direction: A, Calm and clear - docs/design/style.html
 Colours: background #0F1115, surface #1A1D23, text #E8EAED, muted #9AA0A6,
-         accent #4F8CFF, danger #E5534B, success #3FB950
+         accent #4F8CFF, danger #E5534B, success #3FB950 (dark; light in style.html)
 Type:    Inter. Headings 600 weight, body 400. Sizes 32/24/18/16/14.
 Spacing: 4px base scale (4, 8, 16, 24, 32, 48)
 Radius:  8px for cards, 6px for buttons, full for pills
@@ -59,29 +109,34 @@ Library: shadcn/ui
 Mode:    dark first, light optional later
 ```
 
-Ask the user for preferences here rather than inventing them. Concrete prompts that
-get real answers: is there an app whose look you like? Dark or light? Playful or
-plain? Do you have brand colours already?
+Keep only
+the chosen page, as `docs/design/style.html`, and delete the others; git keeps them.
+The tokens in the journey document are the source; the style page is regenerated from
+them whenever they change.
 
-## Does the interface actually matter?
+## Step 2: The prototype
 
-Ask directly, then follow through, because the answer changes the whole phase.
+Ask, with the recommendation first:
 
-**If it matters** (people other than the user will see it, or the user has firm ideas
-about how it should look), recommend a design tool. Claude Design, Google Stitch,
-Figma, v0. Generate mockups first, get them right, then build against them.
+- **Prototype the key flows now** (recommended when the interface matters). One
+  clickable HTML prototype in `prototype/`, in the chosen direction, with sample data.
+  It covers the screens of the key flows and their empty, loading and error states.
+  No backend, no real data, and its code is a reference, not the start of the app.
+- **A design tool instead.** Claude Design, Google Stitch, Figma, v0 - use the prompt
+  below. Good when the user prefers to iterate there.
+- **No prototype.** Screens get a mockup per item when they are planned.
 
-Reason to give the user: reworking a generated interface to match an idea in your head
-is slower and more frustrating than describing that idea to a design tool first.
-Mockups are cheap to change. Implemented components are not.
+Mark every screen in the prototype with a comment: `<!-- SCREEN: Project list -->`. A
+requirement then points at "prototype screen Project list", and the build agent finds
+it by searching for the marker instead of reading the whole file.
 
-**If it does not matter** (personal tool, only the user sees it), say so plainly and
-skip the mockups. Pick a component library, apply the tokens, and move on. Do not push
-a design process onto someone building a script with a form on top.
+Show the prototype in small batches - one flow at a time - and collect feedback per
+batch. A whole app reviewed at once gets a few comments on the first screen and a
+"looks fine" for the rest.
 
 ## The design tool handoff
 
-When mockups are wanted, produce a ready-to-paste prompt block. The journey document
+When a design tool is used, produce a ready-to-paste prompt block. The journey document
 already contains everything it needs.
 
 ```
@@ -93,20 +148,21 @@ Screens needed: [list]
 For each screen show: default state, empty state, error state.
 
 Style: [tokens - colours, type, spacing, radius]
-Reference feel: [app the user named]
+Reference feel: [app the user named, or the chosen direction]
 Platform: [iOS / Android / responsive web], [dark / light]
 
 Do not include: [anything explicitly out of scope]
 ```
 
 Give this to the user as a copyable block. Then wait. Implementation of anything
-UI-heavy does not start until the user has approved either the mockups or an explicit
-decision to skip them.
+UI-heavy does not start until the user has approved the prototype, the mockups, or an
+explicit decision to skip them.
 
 ## Approval gate
 
-Phase 4 ends when the user confirms the journey document and the tokens. Then update
-`project-status.md`, commit, and move to Phase 5.
+Phase 4 ends when the user confirms the journey document, the design direction and
+its tokens, and - if one was made - the prototype. Then update `project-status.md`,
+commit, and move to Phase 5.
 
 If the user is impatient to start building, the honest framing is: this is the last
 cheap moment to change your mind about how the thing works. After this, changes cost

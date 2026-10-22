@@ -44,6 +44,8 @@ login flows is the real one. Context windows die. Files in git don't.
   before any code is written
 - A session that opens by syncing the repo and telling you where you left off
 - An architecture file with a decision log, so a fresh session can reconstruct the why
+- Design settled early: three design directions as pages you open in a browser, then
+  an optional clickable prototype of the key flows, before any app code
 - One implementation plan per feature, approved before any code gets written
 - Independent code review with severity definitions that cannot be talked down
 - A checkpoint after every merge, so you can stop mid-project without losing anything
@@ -69,8 +71,10 @@ your-project/
   docs/
     SETUP.md             where to get each secret, per machine
     user-journey.md      flows, screens, design tokens
+    design/style.html    the chosen design direction
     requirements/        one file per ready backlog item
     plans/               disposable per-feature plans
+  prototype/             clickable prototype of the key flows, optional
   scripts/
     verify.sh            the merge gate
     scan-secrets.sh      history scan before going public
@@ -86,7 +90,7 @@ them on its own at the right moment.
 | Ritual | When | What it does |
 |---|---|---|
 | `/start` | Opening a session | Fetches and pulls, reads the status and backlog, reports where you are, asks what next |
-| `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, UX |
+| `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, design directions and prototype |
 | `/plan` | Adding a requirement | Writes the requirement, runs question rounds for autonomous runs, writes the plan, moves the item to `ready` |
 | `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, two reviews, merge |
 | `/review` | Before merging | Two independent subagent rounds over the diff, findings triaged and fixed after each |

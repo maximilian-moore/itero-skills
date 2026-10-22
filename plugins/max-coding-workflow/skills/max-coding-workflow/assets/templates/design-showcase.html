@@ -1,0 +1,273 @@
+<!doctype html>
+<!--
+  Design showcase - one page per design direction (references/ux-flow.md).
+
+  To make a direction from this template:
+  1. Copy it to docs/design/direction-a.html (b, c ...).
+  2. Change only the TOKENS block and the DIRECTION block below, plus the font link if
+     the direction uses a web font. Leave the layout and components alone, so the user
+     compares styles, not page structures.
+  3. Replace the sample words (projects, tasks, Alex) with the app's own: its screen
+     names, its objects, a realistic name. A direction is judged on how it looks with
+     the real content.
+  4. Open it in a browser and check both light and dark mode before showing it.
+
+  The page needs no build step and no internet unless a web font is linked.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design direction A</title>
+<!-- Optional web font, for example:
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+-->
+<style>
+/* TOKENS START - the only part that changes between directions */
+:root {
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: var(--font-body);
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --weight-heading: 700;
+  --size-h1: 2rem; --size-h2: 1.5rem; --size-h3: 1.125rem;
+  --size-body: 1rem; --size-small: 0.875rem;
+  --space: 8px;                 /* base unit; the page uses multiples of it */
+  --radius-card: 12px; --radius-control: 8px; --radius-pill: 999px;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 12px rgb(0 0 0 / 0.06);
+  --border-width: 1px;
+
+  --bg: #f7f7f8; --surface: #ffffff; --surface-2: #f0f1f3;
+  --text: #16181d; --muted: #5f6672; --border: #e2e4e9;
+  --accent: #3b6fe0; --accent-text: #ffffff; --accent-soft: #e6eefc;
+  --danger: #c93a32; --danger-soft: #fbe9e8;
+  --success: #23803d; --success-soft: #e5f4e9;
+  --warning: #a86500; --warning-soft: #fdf1dc;
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115; --surface: #181b21; --surface-2: #20242c;
+  --text: #e8eaed; --muted: #9aa0a6; --border: #2c313a;
+  --accent: #6f9bff; --accent-text: #0f1115; --accent-soft: #1d2a45;
+  --danger: #ef6b62; --danger-soft: #3a1f1e;
+  --success: #4cc26b; --success-soft: #17301f;
+  --warning: #e0a03a; --warning-soft: #352915;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+}
+/* TOKENS END */
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: var(--size-body)/1.5 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-heading); font-weight: var(--weight-heading); line-height: 1.2; margin: 0 0 calc(var(--space) * 1.5); }
+h1 { font-size: var(--size-h1); } h2 { font-size: var(--size-h2); } h3 { font-size: var(--size-h3); }
+p { margin: 0 0 var(--space); }
+.muted { color: var(--muted); } .small { font-size: var(--size-small); } .mono { font-family: var(--font-mono); }
+
+header.app { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: calc(var(--space) * 3);
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 3); background: var(--surface); border-bottom: var(--border-width) solid var(--border); }
+.logo { font-family: var(--font-heading); font-weight: var(--weight-heading); font-size: var(--size-h3); }
+nav { display: flex; gap: var(--space); flex: 1; overflow-x: auto; }
+nav a { color: var(--muted); text-decoration: none; padding: var(--space) calc(var(--space) * 1.5); border-radius: var(--radius-control); white-space: nowrap; }
+nav a[aria-current] { color: var(--text); background: var(--surface-2); }
+.avatar { width: 32px; height: 32px; border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent);
+  display: grid; place-items: center; font-weight: 600; font-size: var(--size-small); flex: none; }
+
+main { max-width: 1080px; margin: 0 auto; padding: calc(var(--space) * 4) calc(var(--space) * 3); }
+section { margin-bottom: calc(var(--space) * 6); }
+.label { font-size: var(--size-small); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: calc(var(--space) * 1.5); }
+.row { display: flex; flex-wrap: wrap; gap: calc(var(--space) * 1.5); align-items: center; }
+.grid { display: grid; gap: calc(var(--space) * 2); grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+.direction { background: var(--surface); border: var(--border-width) solid var(--border); border-radius: var(--radius-card); padding: calc(var(--space) * 3); box-shadow: var(--shadow); }
+.swatches { display: flex; flex-wrap: wrap; gap: var(--space); margin-top: calc(var(--space) * 2); }
+.swatch { width: 56px; text-align: center; font-size: 11px; color: var(--muted); }
+.swatch span { display: block; height: 40px; border-radius: var(--radius-control); border: var(--border-width) solid var(--border); margin-bottom: 4px; }
+
+.btn { font: inherit; font-weight: 600; cursor: pointer; border: var(--border-width) solid transparent; border-radius: var(--radius-control);
+  padding: var(--space) calc(var(--space) * 2); background: var(--accent); color: var(--accent-text); }
+.btn:hover { filter: brightness(1.08); }
+.btn:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn.secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.danger { background: var(--danger); color: #fff; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+
+.card { background: var(--surface); border: var(--border-width) solid var(--border); border-radius: var(--radius-card); padding: calc(var(--space) * 2.5); box-shadow: var(--shadow); }
+.card .meta { display: flex; justify-content: space-between; align-items: center; margin-top: calc(var(--space) * 2); }
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--surface-2); color: var(--muted); }
+.badge.accent { background: var(--accent-soft); color: var(--accent); }
+.badge.success { background: var(--success-soft); color: var(--success); }
+.badge.warning { background: var(--warning-soft); color: var(--warning); }
+.badge.danger { background: var(--danger-soft); color: var(--danger); }
+
+form.card { max-width: 480px; display: grid; gap: calc(var(--space) * 2); }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: var(--size-small); }
+input, select, textarea { font: inherit; color: var(--text); background: var(--surface); border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-control); padding: var(--space) calc(var(--space) * 1.5); width: 100%; }
+.field.error input { border-color: var(--danger); }
+.field .hint { font-size: var(--size-small); color: var(--muted); }
+.field.error .hint { color: var(--danger); }
+.check { display: flex; gap: var(--space); align-items: center; font-size: var(--size-small); }
+.check input { width: auto; accent-color: var(--accent); }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border: var(--border-width) solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
+th, td { text-align: left; padding: calc(var(--space) * 1.5) calc(var(--space) * 2); border-bottom: var(--border-width) solid var(--border); white-space: nowrap; }
+th { font-size: var(--size-small); color: var(--muted); font-weight: 600; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+
+.alert { border-radius: var(--radius-control); padding: calc(var(--space) * 1.5) calc(var(--space) * 2); font-size: var(--size-small); }
+.alert.success { background: var(--success-soft); color: var(--success); }
+.alert.danger { background: var(--danger-soft); color: var(--danger); }
+.empty { text-align: center; padding: calc(var(--space) * 6) calc(var(--space) * 3); border: 2px dashed var(--border); border-radius: var(--radius-card); }
+.empty .icon { font-size: 32px; margin-bottom: var(--space); }
+.skeleton { height: 14px; border-radius: var(--radius-control); background: linear-gradient(90deg, var(--surface-2), var(--border), var(--surface-2));
+  background-size: 200% 100%; animation: shimmer 1.4s infinite; margin-bottom: var(--space); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+@media (max-width: 640px) {
+  header.app { flex-wrap: wrap; padding: var(--space) calc(var(--space) * 2); }
+  nav { order: 3; flex-basis: 100%; }
+  main { padding: calc(var(--space) * 3) calc(var(--space) * 2); }
+}
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="logo">Appname</div>
+  <nav>
+    <a href="#" aria-current="page">Projects</a>
+    <a href="#">Tasks</a>
+    <a href="#">Reports</a>
+    <a href="#">Settings</a>
+  </nav>
+  <button class="btn secondary" id="theme" type="button">Dark mode</button>
+  <div class="avatar" aria-label="Alex">AL</div>
+</header>
+
+<main>
+  <!-- DIRECTION START - name, feel and reference for this direction -->
+  <section class="direction">
+    <div class="label">Design direction A</div>
+    <h1>Calm and clear</h1>
+    <p class="muted">Quiet surfaces, one blue accent, generous spacing. Feels like a well-made tool you trust with your data.</p>
+    <p class="small muted">Reference feel: Linear, Notion. Font: system font. Best for: daily use, lots of reading.</p>
+    <div class="swatches" id="swatches"></div>
+  </section>
+  <!-- DIRECTION END -->
+
+  <section>
+    <div class="label">Type</div>
+    <h1>Heading one - page title</h1>
+    <h2>Heading two - section title</h2>
+    <h3>Heading three - card title</h3>
+    <p>Body text. This is how a paragraph of real content reads, at the size people will use every day. Long enough to judge line height and contrast.</p>
+    <p class="small muted">Small muted text for hints, timestamps and secondary information. <span class="mono">mono 1,284.50</span></p>
+  </section>
+
+  <section>
+    <div class="label">Buttons</div>
+    <div class="row">
+      <button class="btn" type="button">Save project</button>
+      <button class="btn secondary" type="button">Cancel</button>
+      <button class="btn ghost" type="button">Learn more</button>
+      <button class="btn danger" type="button">Delete</button>
+      <button class="btn" type="button" disabled>Disabled</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Cards</div>
+    <div class="grid">
+      <article class="card">
+        <h3>Website relaunch</h3>
+        <p class="muted small">New landing page and sign-up flow for the spring launch.</p>
+        <div class="meta"><span class="badge accent">In progress</span><span class="small muted">Due 14 Mar</span></div>
+      </article>
+      <article class="card">
+        <h3>Customer survey</h3>
+        <p class="muted small">Ten questions, sent to everyone who signed up this year.</p>
+        <div class="meta"><span class="badge success">Done</span><span class="small muted">2 days ago</span></div>
+      </article>
+      <article class="card">
+        <h3>Price update</h3>
+        <p class="muted small">Waiting for the final numbers before anything goes live.</p>
+        <div class="meta"><span class="badge warning">Waiting</span><span class="small muted">Due 2 Apr</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Form, with one field in its error state</div>
+    <form class="card" onsubmit="return false">
+      <div class="field">
+        <label for="name">Project name</label>
+        <input id="name" value="Website relaunch">
+      </div>
+      <div class="field error">
+        <label for="email">Contact email</label>
+        <input id="email" value="alex@example">
+        <span class="hint">Enter a full email address, like alex@example.com</span>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status"><option>In progress</option><option>Waiting</option><option>Done</option></select>
+      </div>
+      <label class="check"><input type="checkbox" checked> Notify me when it changes</label>
+      <div class="row"><button class="btn" type="submit">Save project</button><button class="btn secondary" type="button">Cancel</button></div>
+    </form>
+  </section>
+
+  <section>
+    <div class="label">List / table</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th></tr></thead>
+        <tbody>
+          <tr><td>Website relaunch</td><td>Alex</td><td><span class="badge accent">In progress</span></td><td class="muted">Today</td></tr>
+          <tr><td>Customer survey</td><td>Sam</td><td><span class="badge success">Done</span></td><td class="muted">2 days ago</td></tr>
+          <tr><td>Price update</td><td>Kim</td><td><span class="badge warning">Waiting</span></td><td class="muted">Last week</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Messages and states</div>
+    <div class="grid">
+      <div>
+        <div class="alert success">Project saved.</div>
+        <div style="height: 12px"></div>
+        <div class="alert danger">Could not save. Check your connection and try again.</div>
+      </div>
+      <div class="card" aria-label="Loading">
+        <div class="skeleton" style="width: 60%"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton" style="width: 80%"></div>
+      </div>
+      <div class="empty">
+        <div class="icon" aria-hidden="true">&#9744;</div>
+        <h3>No projects yet</h3>
+        <p class="muted small">Create your first project to see it here.</p>
+        <button class="btn" type="button">New project</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Light and dark mode switch, and colour swatches read from the tokens above.
+  const root = document.documentElement, button = document.getElementById('theme');
+  const names = ['bg', 'surface', 'text', 'muted', 'accent', 'success', 'warning', 'danger'];
+  function paint() {
+    const css = getComputedStyle(root);
+    document.getElementById('swatches').innerHTML = names.map((n) =>
+      `<div class="swatch"><span style="background: var(--${n})"></span>${n}<br>${css.getPropertyValue('--' + n).trim()}</div>`).join('');
+    button.textContent = root.dataset.theme === 'dark' ? 'Light mode' : 'Dark mode';
+  }
+  button.addEventListener('click', () => { root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'; paint(); });
+  paint();
+</script>
+</body>
+</html>

@@ -11,7 +11,7 @@ file only when you reach its phase:
 1. `references/kickoff.md` - the interview
 2. `references/backlog.md` - build the backlog
 3. `references/architecture.md` - propose and log the architecture
-4. `references/ux-flow.md` - journey, tokens, design handoff
+4. `references/ux-flow.md` - journey, three design directions, prototype
 
 Stop for user confirmation at the end of each phase. Commit after each one.
 Do not write application code during any of these phases.
