@@ -29,7 +29,7 @@ Then move the item through its states as you work:
    `model: "sonnet"`; the reading does not need the strongest model. A small fix skips
    this step.
 4. `draft` to `ready`.
-5. Write the plan to `docs/plans/BL-XXX-plan.md` using
+5. For a small fix, write the plan to `docs/plans/BL-XXX-plan.md` using
    `assets/templates/implementation-plan.md` - the how.
 
 If the item is already `ready` its requirement file exists; reread it rather than
@@ -38,8 +38,13 @@ rewriting it, and go straight to the plan.
 If the item is too big by the signals in the Sizing section of `references/planning.md`,
 propose a split before writing the requirement.
 
-Show the plan and stop. Name your assumptions explicitly and ask about those
-specifically rather than asking a general "does this look right".
+For an autonomous run, show the user sections 3, 4 and 10 of the requirement and get
+an explicit OK before setting `ready`. Then skip the plan: print the run prompt from
+`references/autonomous-run.md`, and recommend starting it in a fresh session. In Claude
+Code, the user can pass it to `/goal`. The run writes its own plan.
+
+For a small fix, show the plan and stop. Name your assumptions explicitly and ask about
+those specifically rather than asking a general "does this look right".
 
 Do not start coding until the user approves.
 
