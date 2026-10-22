@@ -47,6 +47,9 @@ Thumbs.db
 .vscode/
 *.swp
 
+# Review briefs and findings - working files, the fixes are the durable part
+.review/
+
 # Test and coverage output
 coverage/
 .pytest_cache/

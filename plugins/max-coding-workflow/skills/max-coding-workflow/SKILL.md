@@ -102,7 +102,7 @@ almost all your time in. Phase 6 happens when the user wants to publish.
 | 2 | Backlog built with IDs, value, effort, dependencies | `references/backlog.md` | `backlog.md` + ranked Next up list |
 | 3 | Architecture chosen and justified | `references/architecture.md` | `architecture.md` + first ADR entries |
 | 4 | User journey, screens, design tokens | `references/ux-flow.md` | `docs/user-journey.md` + design tool prompt |
-| 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
+| 5 | Build loop, one backlog item at a time | `references/planning.md`, `references/requirement-review.md`, `references/review.md`, `references/checkpoint.md` | Merged PR + updated status + handoff note |
 | 6 | Public readiness | `references/security.md` | History scanned, README, LICENSE |
 
 Do not read all the reference files at once. Read the one for the phase you're in.
@@ -187,7 +187,8 @@ vocabulary is fixed and small.
 
 `idea` - captured, not thought through.
 `draft` - worth building, requirement file being written.
-`ready` - requirement and acceptance tests complete, buildable today.
+`ready` - requirement and acceptance tests complete, buildable today. For an
+autonomous run, the question rounds have also ended with no critical finding.
 `implementation` - a branch exists and work is in flight.
 `implemented` - merged to main.
 `cancelled` - dropped for good, kept with a one-line reason why.
@@ -195,6 +196,14 @@ vocabulary is fixed and small.
 `/plan` promotes `idea` to `draft` to `ready`. `/implement` only picks up `ready` and
 sets `implementation`. `/checkpoint` sets `implemented`. Full definitions and the
 reasoning are in `references/backlog.md`.
+
+Every item is one of two kinds, and the kind sets how much planning it gets. A **small
+fix** - one text, one alignment, one bug, about three files or fewer - gets a short
+requirement and no question rounds. An **autonomous run** - everything else - gets a
+full requirement that an agent can build from alone, for hours, without asking, and
+fresh-reader question rounds check that before it is `ready`. When unsure, it is an
+autonomous run. Details in `references/planning.md` and
+`references/requirement-review.md`.
 
 ## Rituals and shortcuts
 
@@ -210,7 +219,7 @@ skipped.
 
 - start - open a session: sync, read status and backlog, report state, ask
 - kickoff - Phase 0 to 4 for a new project
-- plan - requirement and implementation plan for one backlog item
+- plan - requirement, question rounds and implementation plan for one backlog item
 - implement - build one `ready` item end to end, through to merge
 - review - two independent review rounds over the current diff, each followed by fixes
 - checkpoint - status update, merge the pull request, sync with GitHub
@@ -225,9 +234,12 @@ context window already full of the first.
 
 The phases, rules and artifacts are the same everywhere. Two things vary:
 
-- **Independent review.** Preferred: a subagent with the scoped brief in
-  `references/review.md`. If the tool has no subagents, use the fallback in that file.
-  Never skip the step and never let the reviewing pass be the one that wrote the code.
+- **Independent review and question rounds.** Preferred: a subagent with the scoped
+  brief in `references/review.md` or `references/requirement-review.md`; a cheaper
+  model is fine for the question rounds. If the tool has no subagents, hand the brief
+  to a second agent through a file in `.review/`, as described in
+  `references/requirement-review.md`. Never skip the step and never let the reviewing
+  pass be the one that wrote the code or the requirement.
 - **Session start.** In Claude Code the plugin registers `hooks/session-start.js`
   automatically, and it stays silent outside framework projects. Everywhere else, run
   the `/start` steps above manually at the start of every session. Never skip them
@@ -254,12 +266,13 @@ repo/
   docs/
     SETUP.md                   how to get each secret, per machine
     user-journey.md            personas, flows, screens, design tokens
-    requirements/BL-XXX.md     full requirement + acceptance tests
+    requirements/BL-XXX.md     full requirement + acceptance tests (or the short small-fix form)
     plans/BL-XXX-plan.md       disposable implementation plan
     handover.md                end-of-session handover and restart prompt, overwritten
   scripts/
     verify.sh                  the gate: lint, build, test
     scan-secrets.sh            history scan before going public
+  .review/                     briefs and findings for fresh readers, gitignored
   .claude/
     settings.json              project settings, if the project needs any
 ```

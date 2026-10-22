@@ -16,7 +16,8 @@ Value / Effort: High, Medium, Low. Not everything can be High value.
 Status, in order: idea | draft | ready | implementation | implemented | cancelled
   idea           captured, not thought through yet
   draft          decided it is worth building; requirement file being written
-  ready          requirement file done, acceptance tests defined, buildable today
+  ready          requirement file done, acceptance tests defined, buildable today;
+                 for an autonomous run, the question rounds have ended
   implementation a branch exists and it is being built
   implemented    merged to main
   cancelled      dropped for good; keep the row and a one-line reason why

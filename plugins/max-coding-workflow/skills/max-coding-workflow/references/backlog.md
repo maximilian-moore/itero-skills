@@ -46,7 +46,7 @@ An item moves through these in order. The value of a small fixed vocabulary is t
 | Status | Meaning | Requirement file | What moves it on |
 |---|---|---|---|
 | `idea` | Captured, not thought through | none | You decide it is worth building |
-| `draft` | Worth building, being specified | being written | Acceptance tests are written |
+| `draft` | Worth building, being specified | being written | Acceptance tests are written; for an autonomous run, the question rounds end |
 | `ready` | Buildable today | complete | `/implement` picks it up |
 | `implementation` | A branch exists, work in flight | complete | The PR merges |
 | `implemented` | Merged to main | complete | nothing, it is finished |
@@ -98,16 +98,19 @@ blocks A, one of them is really two items and needs splitting.
 ## The requirement file
 
 Started when an item moves to `draft`, finished when it moves to `ready`. Not before:
-an `idea` with a requirement file is an idea you have over-invested in. Use
-`assets/templates/requirement.md`. It contains:
+an `idea` with a requirement file is an idea you have over-invested in. There are
+two templates, one per kind of item (`references/planning.md`):
 
-- **What and why** - one paragraph, in user language
-- **Acceptance criteria** - a checklist of observable behaviours
-- **Human acceptance test** - numbered plain-language steps, no jargon, so the user
-  can verify it works without reading code
-- **Automated test notes** - what the AI should cover with real tests
-- **Architecture impact** - does this change anything in `architecture.md`?
-- **Out of scope** - what this item deliberately does not do
+- **Small fix** - `assets/templates/requirement-small.md`: what and why, where, the
+  exact change, a named acceptance criterion, a short human acceptance test, out of
+  scope.
+- **Autonomous run** - `assets/templates/requirement.md`: thirteen sections, written so
+  an agent can build the item alone without asking. Beyond the what and why, it holds
+  the scope in and out, the decisions already made with their source, data and
+  interfaces, screens and their states, rules, edge and failure cases, named tests,
+  the human acceptance test, evidence, documentation to update, stop conditions, and
+  a "done when" the agent can check itself. Question rounds check it before it is
+  `ready` (`references/requirement-review.md`).
 
 The human acceptance test is the piece most people skip, and it is the one that catches
 "all tests pass but the feature is useless". Write it before the code, not after,
