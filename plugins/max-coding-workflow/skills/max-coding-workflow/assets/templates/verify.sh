@@ -20,5 +20,9 @@ npm test
 echo "==> Build"
 npm run build
 
+# Requirement files: warnings only. Add --strict to fail on any warning.
+echo "==> Requirements"
+bash scripts/check-requirement.sh
+
 echo
 echo "All checks passed."

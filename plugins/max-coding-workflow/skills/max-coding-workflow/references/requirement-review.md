@@ -31,7 +31,11 @@ What earlier projects showed:
 2. The blockers in section 2 are `implemented`. If not, say so: the rounds would check
    the file against code that does not exist yet.
 3. No open choice in the text: no TBD, maybe, probably, if needed, or similar, decide
-   later, ask me. Search the file for them.
+   later, ask me. Run `scripts/check-requirement.sh docs/requirements/BL-XXX.md`: it
+   finds those words, missing and empty sections, leftover template lines, gaps in the
+   test numbers, and the size signals. It only warns; fix each warning or leave it on
+   purpose. It costs nothing, so run it again after every round. Where the script
+   cannot run, search the file for the words by hand.
 4. Commit the draft. The rounds change it, and the first version is worth having.
 
 ## One round

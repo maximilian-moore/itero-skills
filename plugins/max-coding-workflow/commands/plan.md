@@ -21,7 +21,9 @@ Then move the item through its states as you work:
 
 1. `idea` to `draft`, and write `docs/requirements/BL-XXX.md` - from
    `assets/templates/requirement-small.md` for a small fix, from
-   `assets/templates/requirement.md` for an autonomous run. Commit the draft.
+   `assets/templates/requirement.md` for an autonomous run. Run
+   `scripts/check-requirement.sh` on it, fix the warnings that are real, and commit
+   the draft.
 2. If an autonomous run has screens the prototype does not cover, offer a mockup
    (`docs/mockups/BL-XXX.html`) as described in "Screens not in the prototype" in
    `references/planning.md`, and settle the look before step 3. Do not ask about the

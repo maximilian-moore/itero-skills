@@ -313,6 +313,7 @@ repo/
   scripts/
     verify.sh                  the gate: lint, build, test
     scan-secrets.sh            history scan before going public
+    check-requirement.sh       warns about open choices and gaps in requirement files
   .review/                     briefs and findings for fresh readers, gitignored
   .claude/
     settings.json              project settings, if the project needs any
