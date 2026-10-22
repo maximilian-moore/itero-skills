@@ -6,7 +6,8 @@ Read `references/handover.md` and follow it in order.
 
 1. **Make the repository true.** Update `project-status.md` (Last updated, Where we are,
    Next step, Open decisions, Gotchas) and `backlog.md`. Write every decision from this
-   session into the file where it belongs.
+   session into the file where it belongs, and the session's lessons into
+   `learnings.md` (`references/learnings.md`, at most three entries).
 2. **Commit and push.** Half-finished work goes onto its branch as a work-in-progress
    commit and is pushed. Never put unreviewed work onto main to hand it over.
    `git status -sb` must show a clean tree, not ahead of upstream.

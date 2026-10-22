@@ -113,8 +113,20 @@ almost all your time in. Phase 6 happens when the user wants to publish.
 Do not read all the reference files at once. Read the one for the phase you're in.
 Loading everything wastes context that the actual work needs.
 
-After every phase, update `project-status.md` and commit. That commit is the
-checkpoint that makes the phase survivable.
+After every phase, update `project-status.md`, write what the phase taught into
+`learnings.md`, and commit. That commit is the checkpoint that makes the phase
+survivable.
+
+## The learning loop
+
+Every phase, run, `/checkpoint` and `/handover` ends by answering three questions: what
+cost extra tokens or time, what caused a bug or rework, and what the next agent should
+do differently. The answers - at most three short instructions, each with its reason -
+go into the matching phase section of `learnings.md`. The next agent reads the sections
+that fit before it plans, so the lesson shapes the requirement instead of being
+rediscovered in the build. The few traps that can hit in any turn go into `AGENTS.md`
+instead, which tools load at every session start. Quality first, then fewer tokens;
+never fewer tokens at the cost of a check. Details in `references/learnings.md`.
 
 ---
 
@@ -280,6 +292,8 @@ run the same repo through several tools.
 ```
 repo/
   README.md                    what it is, how to run it
+  AGENTS.md                    where things live, plus traps that hit in any turn
+  learnings.md                 lessons per phase, read before planning and runs
   project-status.md            one page, current state + next step
   backlog.md                   index: ID, title, value, effort, status, blocked-by
   architecture.md              stack, structure, and the ADR log

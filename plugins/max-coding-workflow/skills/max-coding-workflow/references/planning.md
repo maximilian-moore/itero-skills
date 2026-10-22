@@ -37,6 +37,9 @@ Record the kind in the file's `Run:` line.
 Planning is what moves a backlog item along, so update `backlog.md` as you go rather
 than at the end.
 
+- Read the Planning, Design, Build and Testing sections of `learnings.md`. Every
+  learning that applies goes into the requirement or the plan, so it reaches the
+  build (`references/learnings.md`).
 - Item is `idea`: move it to `draft` before writing anything, then write the
   requirement file at `docs/requirements/BL-XXX.md`. The requirement is the *what*, in
   the user's language. Do not start the plan until it exists.

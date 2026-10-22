@@ -16,6 +16,10 @@ run the human acceptance test. Only a passed check moves the item to `implemente
 bugs become small fixes and the check repeats. See "After the merge" in
 `references/checkpoint.md`.
 
+Then write the lessons of this item into `learnings.md` (`references/learnings.md`):
+what cost extra tokens or time, what caused a bug or rework, what to do differently.
+At most three entries; merge rather than append.
+
 Then write a plain-language handoff note, run `/handover`, and recommend a fresh
 session.
 

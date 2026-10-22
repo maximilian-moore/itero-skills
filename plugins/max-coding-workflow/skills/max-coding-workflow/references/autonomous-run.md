@@ -48,9 +48,9 @@ discussion; the run needs the files, not the discussion.
 
 ## During the run
 
-1. Read `docs/run-protocol.md` and the requirement in full. Read large references -
-   the prototype, the design page - only by the marker or heading the requirement
-   names.
+1. Read `docs/run-protocol.md` and the requirement in full, and the Build, Testing,
+   Review and Deploy sections of `learnings.md`. Read large references - the
+   prototype, the design page - only by the marker or heading the requirement names.
 2. Write `docs/plans/BL-XXX-plan.md` and commit it. The approved requirement is the
    approval; continue without waiting.
 3. Branch, set the item to `implementation`, commit.
@@ -109,7 +109,10 @@ Merging and deploying are separate, and neither is the end.
    from the requirement, the choices taken under the blocker protocol, the screenshots,
    and a link to the human acceptance test in section 10. It links to the requirement
    rather than copying it.
-4. **End the run** with a message that gives the deployed address, the path of the
+4. **Write the learnings** of the run into `learnings.md` (`references/learnings.md`):
+   what cost extra tokens or time, what caused a review finding or rework, what the
+   next run should do differently. Commit and push.
+5. **End the run** with a message that gives the deployed address, the path of the
    check sheet, and the number of open choices to confirm.
 
 Then the user checks. Their result goes into the check sheet:

@@ -11,6 +11,9 @@ planning.
 Check the item's `Blocked by` field first. If a blocker is not `implemented`, say so
 and offer the next unblocked item.
 
+Read the Planning, Design, Build and Testing sections of `learnings.md`, if it
+exists, and carry every learning that applies into the requirement or the plan.
+
 Decide the kind of item first, as `references/planning.md` describes: a `small fix` or
 an `autonomous` run. Say which and why in one line; when unsure, it is autonomous.
 
