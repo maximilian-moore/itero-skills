@@ -6,7 +6,8 @@ wait for the user at any point; the user decides before the run (the approved
 requirement) and after it (the human check).
 
 ## Working steps
-1. Read this file and the requirement in full. Read large references only by the
+1. Read this file and the requirement in full, and the Build, Testing, Review and
+   Deploy sections of `learnings.md`. Read large references only by the
    marker or heading the requirement names: [e.g. search prototype/index.html for
    "SCREEN: <name>"; never read it whole].
 2. Write `docs/plans/BL-XXX-plan.md` and commit it. The requirement is approved, so
@@ -23,8 +24,10 @@ requirement) and after it (the human check).
    (the item stays `implementation`, note "merged, waiting for user check").
 8. Deploy to the test environment, run the end-to-end tests against it, take the
    screenshots from the requirement's section 11.
-9. Write `docs/evidence/BL-XXX.md` and end the run with the address, the path of that
-   file, and the number of open choices.
+9. Write `docs/evidence/BL-XXX.md`. Write the run's learnings into `learnings.md`:
+   what cost extra tokens or time, what caused a review finding or rework, what the
+   next run should do differently - at most three entries. Commit, push, and end the
+   run with the address, the path of the check sheet, and the number of open choices.
 
 ## Environments
 | Name | Address | How to deploy | Data |

@@ -25,6 +25,14 @@ Then: protect main. On GitHub, require a pull request before merging. If the use
 finds branch protection too heavy for a solo project, the minimum substitute is a
 hard rule that you never commit directly to main and never force-push it.
 
+Then copy `assets/templates/AGENTS-template.md` to `AGENTS.md` and
+`assets/templates/learnings.md` to `learnings.md`, both at the repository root. (The
+template has a different name so that tools working inside the skill do not mistake
+it for their own instructions.) `AGENTS.md` is the file most coding tools load at every session start:
+it says where everything lives, plus the few traps that can hit in any turn.
+`learnings.md` collects the lessons of every phase and run, read before planning
+(`references/learnings.md`).
+
 ## Phase 0.2 - .gitignore, and telling the user what it does
 
 Write the `.gitignore` from `assets/templates/gitignore.txt`, then **print a short

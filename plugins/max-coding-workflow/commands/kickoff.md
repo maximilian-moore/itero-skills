@@ -13,5 +13,9 @@ file only when you reach its phase:
 3. `references/architecture.md` and `references/testing.md` - propose and log the architecture and the test stack
 4. `references/ux-flow.md` - journey, three design directions, prototype
 
-Stop for user confirmation at the end of each phase. Commit after each one.
+Stop for user confirmation at the end of each phase. Write the phase's lessons into
+`learnings.md`, then commit.
+
+In Claude Code, which reads `CLAUDE.md` rather than `AGENTS.md`, create a `CLAUDE.md`
+containing the single line `@AGENTS.md`, so both files say the same thing.
 Do not write application code during any of these phases.

@@ -25,7 +25,11 @@ accurately, because the next session trusts the files and nothing else.
 
 - **Status file.** Update `project-status.md`: `Last updated`, `Where we are`, `Next
   step` (never empty), `Open decisions`, and `Gotchas`. Anything that cost more than ten
-  minutes this session goes into Gotchas.
+  minutes this session goes into Gotchas if it is temporary, or into `learnings.md` if
+  it will still hold next month.
+- **Learnings.** Answer the three questions in `references/learnings.md` for this
+  session and write the answers into `learnings.md`. Move a learning to `AGENTS.md`
+  only if it can hit in any turn.
 - **Backlog.** Every item touched this session has its real status. Out-of-scope ideas
   that came up are rows with status `idea`. The `Next up` list matches the next step.
 - **Decisions.** Every decision the user made this session is written where it belongs:
@@ -102,7 +106,8 @@ Answer each question with yes, or fix the gap:
    asking the user anything that this session already knew?
 2. Is the working tree clean and pushed, with nothing committed only locally?
 3. Do the status file, the backlog, and the handover name the same next step?
-4. Is every decision from this session written in a file, not only in the chat?
+4. Is every decision from this session written in a file, not only in the chat, and
+   every lasting lesson in `learnings.md`?
 5. Does the handover link to facts instead of copying them?
 6. Is the restart prompt ten lines or shorter?
 

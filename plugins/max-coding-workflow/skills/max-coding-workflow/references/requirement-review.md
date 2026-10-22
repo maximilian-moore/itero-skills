@@ -67,6 +67,10 @@ Everything else - a clearer word, a detail any builder would get right - is mino
   tell the user what is open. Usually the item is too big or a decision is missing;
   the user decides whether to split it, decide the open point, or go ahead.
 
+Write what the rounds taught into the Planning section of `learnings.md` - typically
+the kind of gap the reader kept finding, so the next requirement avoids it from the
+start (`references/learnings.md`).
+
 Then record the rounds in the file's header (`Question rounds: 3 rounds: 21, 9, 2
 findings, none critical in round 3`), set the item to `ready`, and commit.
 

@@ -56,6 +56,8 @@ login flows is the real one. Context windows die. Files in git don't.
   blocker protocol instead of questions, merge and deploy, then a check sheet for your
   human check before anything counts as done
 - A checkpoint after every merge, so you can stop mid-project without losing anything
+- A learning loop: every phase, run and session ends by writing what cost tokens or
+  caused rework into `learnings.md`, which the next agent reads before it plans
 - Secrets handled properly from day one, and a history scan before you go public
 
 **The five rules**
@@ -71,6 +73,8 @@ login flows is the real one. Context windows die. Files in git don't.
 ```
 your-project/
   README.md              what it is, how to run it
+  AGENTS.md              where things live, plus traps that hit in any turn
+  learnings.md           lessons per phase, read before planning
   project-status.md      one page: where you are, what is next
   backlog.md             index of every item, plus known issues
   architecture.md        the stack, and the log of why

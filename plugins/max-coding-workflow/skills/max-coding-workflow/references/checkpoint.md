@@ -51,9 +51,11 @@ BL-004 - Export to CSV. Needs an implementation plan.
 **Next step is never empty.** The user should be able to open this file cold, on any
 machine, and know what to do without thinking. That is the whole purpose of the file.
 
-**Gotchas earn their place.** Anything that cost you more than ten minutes to work out
-goes here. Future sessions will hit the same wall otherwise, and rediscovering the same
-problem is the most expensive thing an AI agent does.
+**Gotchas are for the current state.** A trap that is temporary - tied to an open bug
+or a half-finished migration - goes here, and leaves when the state changes. A lesson
+that will still hold next month goes to `learnings.md` instead, where the next agent
+reads it before planning. Rediscovering the same problem is the most expensive thing an
+AI agent does, so anything that cost more than ten minutes goes into one of the two.
 
 ## The merge ritual
 
@@ -109,6 +111,9 @@ After merging, write two or three sentences of plain-language handoff to the use
 > Next up is BL-004, CSV export, which needs a plan first. One thing to watch: the
 > save handler does not yet validate empty titles, that is logged as BUG-003.
 > Good moment to start a fresh session.
+
+Then answer the three learning questions in `references/learnings.md` and write the
+answers into `learnings.md`, at most three entries.
 
 Then run the handover in `references/handover.md`: it writes `docs/handover.md` and
 prints a short restart prompt for the next session. Recommend `/clear` or a new session
