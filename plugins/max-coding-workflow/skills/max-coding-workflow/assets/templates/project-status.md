@@ -12,5 +12,8 @@ Last merged: BL-XXX - [title] (PR #N)
 ## Open decisions
 - [Question that is still open, and by when it needs answering]
 
+## Security incidents
+- None recorded.
+
 ## Gotchas
 - [Anything that cost more than ten minutes to work out]

@@ -1,8 +1,10 @@
-# Phase 0: Repo and secrets. Phase 6: Going public.
+# Phase 0: Repo and secrets. Every phase: supply chain and incidents. Phase 6: Going public.
 
-Two jobs live here. Phase 0 makes the repo safe to work in. Phase 6 makes it safe to
-show the world. They are separated because `.gitignore` protects the future and does
-nothing about the past.
+Three jobs live here. Phase 0 makes the repo safe to work in. The supply-chain check
+and the incident protocol keep it safe in every phase, whenever something comes in
+from outside or something looks wrong. Phase 6 makes it safe to show the world. Phase 0
+and Phase 6 are separated because `.gitignore` protects the future and does nothing
+about the past.
 
 ---
 
@@ -123,6 +125,57 @@ least one real test. It is the gate in rule 2, and a gate that always passes is 
 gate. It grows with the test stack chosen in Phase 3 (`references/testing.md`):
 integration tests with the first database code, end-to-end tests with the first
 screen.
+
+---
+
+## Every phase - Before installing or running anything from outside
+
+Coding agents suggest package names from memory, and some of those packages do not
+exist. Attackers register exactly those invented names, and names one typo away from
+popular packages (typosquatting). A script piped from the internet into a shell runs
+with the user's rights before anyone has read it. So before you add a dependency,
+install a tool, or run a script or binary that comes from outside the repository:
+
+1. **Confirm it exists and is the one you mean.** Look it up in its registry (npm,
+   PyPI, pub.dev, crates.io, Homebrew with `brew info --json=v2 <name>`, and so on).
+   Check the exact spelling, the publisher or maintainer (for Homebrew, the tap), the
+   homepage and source repository it links to, its age and how widely it is used.
+   Stop and ask the user if you cannot find it, if it is brand new, if the publisher
+   does not match the project's own homepage, or if hardly anyone uses it.
+2. **Take the install command from the official source.** Use the project's own
+   documentation, not memory or a forum post. Pin the version and commit the lockfile.
+3. **Download, read, then run.** Never pipe a remote script into a shell
+   (`curl ... | sh`). Download it to a file, read it, check where it fetches things
+   from, then run it. Where the publisher provides a checksum or signature, verify it,
+   for example `shasum -a 256 <file>` against the published value.
+4. **Least privilege.** Install into the project (local dependencies, a virtual
+   environment) rather than system-wide. No `sudo` unless the user agrees to that one
+   command. Use a sandbox where the tool offers one.
+5. **Name it in the plan.** Every new dependency goes into the implementation plan with
+   its registry page, so the user and the reviewer can see what comes in and why.
+
+If a check fails or anything looks wrong, handle it as an incident (next section).
+
+## Every phase - Security incidents
+
+An incident is anything security-relevant that went wrong or looks wrong: a secret
+that was committed or shown, a package that is not what it claimed, a script or tool
+that behaves unexpectedly (network calls you did not expect, files changed outside the
+project, a prompt for credentials), or a failed check from the section above. Act in
+this order:
+
+1. **Contain it.** Stop the step. Install, run or push nothing further that depends on
+   it. Remove what came in, and revert the commit if it is not pushed yet. If a secret
+   may be exposed, tell the user to revoke and rotate it now; deleting it from the repo
+   is not enough (Phase 6).
+2. **Tell the user straight away**, in plain words: what happened, what you have already
+   done, and what they need to do. Do not wait for the end of the task.
+3. **Log it** under "Security incidents" in `project-status.md`: the date, what
+   happened, what was done, what is still open.
+4. **Prevent a repeat.** Add the rule that would have stopped it to "Always relevant" in
+   `AGENTS.md`, so every later session reads it.
+
+An incident is never Low severity (rule 3).
 
 ---
 

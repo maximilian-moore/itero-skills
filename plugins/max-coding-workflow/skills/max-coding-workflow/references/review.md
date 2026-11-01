@@ -141,6 +141,9 @@ have already done.
 - Are errors leaking internal detail such as stack traces or file paths to the user?
 - Is anything sensitive being logged?
 - Does anything sensitive end up in client-side code, where it is public by definition?
+- New dependencies: does each one exist under that exact name, from the expected
+  publisher, pinned in the lockfile and named in the plan? Is any script fetched from
+  the internet and run without being read (`references/security.md`)?
 
 **Data**
 - Can this lose or corrupt existing data?
@@ -167,6 +170,8 @@ rates things Low.
 
 **High** - fix in this PR, no exceptions
 - Any secret, key, or credential exposed
+- A dependency or script that is not what it claims, such as a typosquatted or invented
+  package name
 - An authentication or authorisation bypass
 - Data loss or corruption on a normal path
 - The core feature does not work

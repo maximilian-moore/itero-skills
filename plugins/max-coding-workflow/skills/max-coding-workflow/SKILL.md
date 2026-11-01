@@ -53,7 +53,11 @@ acceptance test and it passed. Until then it stays `implementation`, with the no
 
 **3. Security and data loss are never Low.**
 A finding that touches secrets, authentication, user data, payments, or data deletion
-is at minimum Medium severity, no matter how small the fix looks.
+is at minimum Medium severity, no matter how small the fix looks. Two habits follow
+from this rule in every phase. Verify any package, tool or script from outside the repo
+before installing or running it, because agents invent package names and attackers
+register them. And handle anything suspicious as an incident: contain it, tell the user
+at once, log it, add the rule that prevents a repeat (`references/security.md`).
 
 **4. The stuck rule: three strikes, then stop.**
 After three failed attempts at the same problem, stop coding. Write what you tried and

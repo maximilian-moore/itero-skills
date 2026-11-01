@@ -11,6 +11,9 @@ code.]
 - `path/to/file` - new - [what it does]
 - `path/to/other` - modified - [what changes]
 
+## New dependencies
+None. / - `name` version - [registry page] - [why; publisher and source checked]
+
 ## Steps
 1. 
 2. 
