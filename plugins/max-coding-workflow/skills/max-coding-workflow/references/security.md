@@ -37,6 +37,12 @@ Copy `scripts/check-requirement.sh` from the skill to `scripts/` in the project.
 checks requirement files for open choices, missing sections and test numbering
 (`references/requirement-review.md`).
 
+If the tool supports slash commands and the skill was not installed as a plugin, run
+`scripts/install-commands.sh` from the skill folder with the project as the working
+directory. It links the ritual shortcuts (`/start`, `/plan`, `/handover` and the rest)
+into the project and git-ignores the links. Tell the user they may need a fresh session
+before the commands appear.
+
 ## Phase 0.2 - .gitignore, and telling the user what it does
 
 Write the `.gitignore` from `assets/templates/gitignore.txt`, then **print a short
@@ -47,6 +53,7 @@ accidental leaks happen because the person did not know a file was tracked.
 |---|---|
 | `.env`, `.env.*` (not `.env.example`) | Real API keys and passwords. The single most common leak. |
 | `.claude/settings.local.json` | Machine-specific Claude settings, sometimes with tokens. |
+| `.agents/`, `.claude/skills/`, linked `.claude/commands/*.md` | Links to skills and commands on this machine. They break anywhere else. |
 | `node_modules/`, `venv/`, `__pycache__/` | Rebuildable from a lockfile. Bloats the repo and hides diffs. |
 | `*.db`, `*.sqlite`, `data/` | Real user data. A privacy problem, not just a size one. |
 | `.DS_Store`, `Thumbs.db` | OS clutter. Harmless, but it makes a public repo look careless. |
