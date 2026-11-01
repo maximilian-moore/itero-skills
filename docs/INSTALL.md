@@ -120,9 +120,16 @@ nested deeper.
 
 **Slash commands collide.** The manual Claude Code install copies every command file
 into your commands directory unnamespaced - for `max-coding-workflow` that is `start`,
-`kickoff`, `plan`, `implement`, `review` and `checkpoint`. If you already have commands
+`kickoff`, `plan`, `implement`, `review`, `checkpoint` and `handover`. If you already have commands
 by those names, use the marketplace install instead, which namespaces them, or rename
 them.
+
+**Slash commands are missing** (`max-coding-workflow`). This happens when the skill
+folder was linked or copied into a project on its own, without the plugin. From the
+project, run `<skill-folder>/scripts/install-commands.sh`. It links the commands into
+`.claude/commands/` and git-ignores the links; existing commands of the same name are
+left alone. Start a new session if they do not appear. The agent also does this by
+itself at session start.
 
 **The session-start hook does not fire after a manual install.** Only the marketplace
 install registers it, because registration lives in the plugin manifest that the manual

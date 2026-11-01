@@ -107,6 +107,10 @@ without reading code.
 - `path/to/file.ts` - new - what it does
 - `path/to/other.ts` - modified - what changes
 
+## New dependencies
+None. / `name` version - registry page - why; name, publisher and source checked
+(`references/security.md`, "Before installing or running anything from outside").
+
 ## Steps
 1. ...
 2. ...

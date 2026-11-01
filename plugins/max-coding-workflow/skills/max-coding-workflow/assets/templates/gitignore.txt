@@ -14,6 +14,12 @@ secrets.yaml
 # Claude Code - machine-specific settings may contain tokens
 .claude/settings.local.json
 
+# Skills linked in from a folder on this machine (links break anywhere else).
+# Remove .claude/skills/ if the project commits skills of its own.
+# scripts/install-commands.sh adds its linked command files below on its own.
+.agents/
+.claude/skills/
+
 # Dependencies - rebuildable from the lockfile
 node_modules/
 venv/

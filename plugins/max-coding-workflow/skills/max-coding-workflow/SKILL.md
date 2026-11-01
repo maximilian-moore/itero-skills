@@ -53,7 +53,11 @@ acceptance test and it passed. Until then it stays `implementation`, with the no
 
 **3. Security and data loss are never Low.**
 A finding that touches secrets, authentication, user data, payments, or data deletion
-is at minimum Medium severity, no matter how small the fix looks.
+is at minimum Medium severity, no matter how small the fix looks. Two habits follow
+from this rule in every phase. Verify any package, tool or script from outside the repo
+before installing or running it, because agents invent package names and attackers
+register them. And handle anything suspicious as an incident: contain it, tell the user
+at once, log it, add the rule that prevents a repeat (`references/security.md`).
 
 **4. The stuck rule: three strikes, then stop.**
 After three failed attempts at the same problem, stop coding. Write what you tried and
@@ -86,7 +90,9 @@ the command:
    `Last updated` line; is an item stuck in `implementation` with no merged PR; do the
    status file and the backlog disagree about the last merge. Say so before doing
    anything else.
-5. State back to the user in two or three lines: where the project is, and what the
+5. If the tool supports slash commands but the project has none of the ritual
+   shortcuts, install them (see "Rituals and shortcuts").
+6. State back to the user in two or three lines: where the project is, and what the
    next step is. Then ask whether to proceed.
 
 A SessionStart hook does steps 1, 3 and part of 4 automatically where it is installed.
@@ -245,6 +251,15 @@ support slash commands they are available as `/start`, `/kickoff`, `/plan`,
 `/implement`, `/review`, `/checkpoint` and `/handover`. Where they are not, the reference files
 carry the same instructions.
 
+**Make sure the shortcuts exist.** The plugin install brings them along. When the skill
+folder was linked or copied into a project on its own, they are missing until you install
+them: run `scripts/install-commands.sh` from the skill folder, with the project as the
+working directory. It links the command files from the plugin's `commands/` folder into
+the project's command folder (for Claude Code, `.claude/commands/`) and git-ignores the
+links, because they point into this machine's skill folder. Do this in Phase 0, and in
+the `/start` ritual whenever the tool supports slash commands but the project has none
+of these. Then tell the user, since the commands may only appear in a fresh session.
+
 Either way, run the ritual yourself at the right moment without waiting to be asked.
 The user should not have to remember process mechanics while thinking about the
 product, and a step that depends on someone typing a command is a step that gets
@@ -317,6 +332,7 @@ repo/
   .review/                     briefs and findings for fresh readers, gitignored
   .claude/
     settings.json              project settings, if the project needs any
+    commands/                  ritual shortcuts linked by scripts/install-commands.sh, gitignored
 ```
 
 Templates for all of these are in `assets/templates/`. Copy them, don't invent new
