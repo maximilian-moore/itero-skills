@@ -21,6 +21,7 @@ Out - deliberately not built:
 
 ## Automated checks
 - Named tests: BL-XXX-T01 to T[NN] pass, locally and in CI
+- Test probes: [n] new tests probed, failed when implementation broken, restored clean
 - End-to-end tests against the test environment: pass
 - Review: round 1 [n] findings, round 2 [n] findings; deferred: [BUG-XXX, or none]
 

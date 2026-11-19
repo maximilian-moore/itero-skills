@@ -13,7 +13,7 @@ Built by [Max Moore](https://itero-digital.com).
 
 | Skill | What it does | Status |
 |---|---|---|
-| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.3.0 |
+| [`max-coding-workflow`](#maxs-ai-coding-framework) | A repo-first process for building software with an AI coding agent | v1.11.0 |
 | [`multi-agent-coding`](#multi-agent-coding-framework) | A collaborative, repo-first process for teams and multiple AI coding agents | v1.0.0 |
 
 More are coming. Each one lives in its own folder and installs independently, so you
@@ -23,7 +23,7 @@ can take one without taking all of them.
 
 ### Max's AI Coding Framework
 
-`max-coding-workflow`
+`max-coding-workflow` · [Full human guide](docs/max-coding-workflow.md)
 
 Seven phases, five rules, and a set of documents that live in your repository instead
 of in the chat window.
@@ -47,11 +47,15 @@ login flows is the real one. Context windows die. Files in git don't.
 - Design settled early: three design directions as pages you open in a browser, then
   an optional clickable prototype of the key flows, before any app code
 - One implementation plan per feature, approved before any code gets written
-- A test stack chosen with the architecture: unit and integration tests, and Playwright
-  end-to-end tests for the key flows of anything with a browser interface
-- Independent code review with severity definitions that cannot be talked down: one
-  round for a small fix; for an autonomous run, correctness and security in parallel,
-  then a second round that checks the fixes
+- Systematic root-cause debugging (`/debug`): reproduce with one exact command, isolate
+  one hypothesis at a time, prove it with a failing test before fixing, and stop after
+  three failed attempts
+- A test stack chosen with the architecture: unit, integration, and Playwright
+  end-to-end tests, plus test-mutation probing to prove new tests fail when code breaks
+- Independent code review with severity definitions that cannot be talked down and
+  prompt-injection guardrails on untrusted diffs: one round for a small fix; for an
+  autonomous run, correctness and security in parallel, then a second round that checks
+  the fixes
 - Autonomous runs: a run prompt any tool can start (in Claude Code via `/goal`), a
   blocker protocol instead of questions, merge and deploy, then a check sheet for your
   human check before anything counts as done
@@ -96,7 +100,7 @@ your-project/
 repository, interviews you, builds the backlog, proposes an architecture, and then
 works one backlog item at a time.
 
-Six rituals repeat. In Claude Code they are slash commands; elsewhere the agent runs
+Eight rituals repeat. In Claude Code they are slash commands; elsewhere the agent runs
 them on its own at the right moment.
 
 | Ritual | When | What it does |
@@ -104,7 +108,8 @@ them on its own at the right moment.
 | `/start` | Opening a session | Fetches and pulls, reads the status and backlog, reports where you are, asks what next |
 | `/kickoff` | New project | Phases 0 to 4: repo, interview, backlog, architecture, design directions and prototype |
 | `/plan` | Adding a requirement | Writes the requirement, runs question rounds for autonomous runs, writes the plan, moves the item to `ready` |
-| `/implement` | Building | Takes the top `ready` item through branch, code, verify, pull request, reviews, merge, your check |
+| `/debug` | When something breaks | Reproduces with one exact command, isolates root cause, proves it with a failing test, fixes minimally |
+| `/implement` | Building | Takes the top `ready` item through branch, code, test probing, verify, pull request, reviews, merge, your check |
 | `/review` | Before merging | Independent subagent rounds over the diff, by item kind, findings triaged and fixed after each |
 | `/checkpoint` | After merging | Status update, merge the pull request, sync with GitHub, handoff note |
 | `/handover` | Ending a session | Status true and pushed, writes `docs/handover.md`, prints a short restart prompt for a fresh session |

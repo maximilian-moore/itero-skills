@@ -8,9 +8,9 @@ description: >
   checkpoints that survive a cleared context. Use it when the user starts or resumes a
   software project, or says "let's build X", "new project", "start a session", "where
   did I leave off", "what next", "implement the next item", "plan this feature",
-  "review this PR", "update the status" or "make this repo public". Also use it for
-  vibe coding or structuring an AI-assisted build. Do not skip it for small changes -
-  that is where the process gets dropped.
+  "review this PR", "debug this", "fix this bug", "update the status" or "make this repo
+  public". Also use it for vibe coding or structuring an AI-assisted build. Do not skip
+  it for small changes - that is where the process gets dropped.
 ---
 
 # Max's AI Coding Framework
@@ -60,12 +60,13 @@ register them. And handle anything suspicious as an incident: contain it, tell t
 at once, log it, add the rule that prevents a repeat (`references/security.md`).
 
 **4. The stuck rule: three strikes, then stop.**
-After three failed attempts at the same problem, stop coding. Write what you tried and
-what you observed into `project-status.md` under Gotchas, then ask the user how to
-proceed. Looping burns tokens and quietly mangles the codebase, and a non-developer
-cannot easily tell flailing apart from progress. In an autonomous run, stop that part
-rather than the run: log it in `docs/blockers.md` and continue with what does not
-depend on it (`references/autonomous-run.md`).
+After three failed attempts at the same problem, stop coding. Clean up any temporary
+debug logs, write what you tried and what you observed into `project-status.md` under
+Gotchas, then ask the user how to proceed. Looping burns tokens and quietly mangles the
+codebase, and a non-developer cannot easily tell flailing apart from progress. In an
+autonomous run, stop that part rather than the run: log it in `docs/blockers.md` and
+continue with what does not depend on it (`references/autonomous-run.md`). For systematic
+root-cause reproduction before guessing at fixes, follow `references/debugging.md`.
 
 **5. Every fact lives in exactly one file.**
 Do not copy backlog detail into the status file, or architecture decisions into a
@@ -166,12 +167,14 @@ status is what lets a future session find work abandoned by a session that died.
 
 **5. Build.** Write the code and the automated tests together, not tests afterwards.
 Each named test in the requirement (`BL-XXX-T01`) carries its ID in the test title. For
-a bug, the failing test comes first. Never weaken, skip or delete a test to get to
-green; see `references/testing.md`. Stay inside the plan's scope. Anything outside it
-goes to the backlog.
+a bug, reproduce with one exact command first (`references/debugging.md`) and write the
+failing test before fixing. Never weaken, skip or delete a test to get to green; see
+`references/testing.md`. Stay inside the plan's scope. Anything outside it goes to the
+backlog.
 
-**6. Verify.** Run the verify command. It must exit clean. If it doesn't, fix it before
-review. Never ask for review on a red build.
+**6. Verify.** Probe up to three new tests (`references/testing.md`) to prove they fail
+when the covered code breaks, restore cleanly, then run the verify command. It must exit
+clean. If it doesn't, fix it before review. Never ask for review on a red build.
 
 **7. Self-check.** Reread your own diff against the requirement. This is cheap and it
 catches real mistakes, but it is not the review, because the model that wrote the code
@@ -246,10 +249,10 @@ autonomous run. Details in `references/planning.md` and
 
 ## Rituals and shortcuts
 
-Seven steps in this process are rituals with their own instructions. In tools that
-support slash commands they are available as `/start`, `/kickoff`, `/plan`,
-`/implement`, `/review`, `/checkpoint` and `/handover`. Where they are not, the reference files
-carry the same instructions.
+Eight steps in this process are rituals with their own instructions. In tools that
+support slash commands they are available as `/start`, `/kickoff`, `/plan`, `/debug`,
+`/implement`, `/review`, `/checkpoint` and `/handover`. Where they are not, the reference
+files carry the same instructions.
 
 **Make sure the shortcuts exist.** The plugin install brings them along. When the skill
 folder was linked or copied into a project on its own, they are missing until you install
@@ -268,6 +271,7 @@ skipped.
 - start - open a session: sync, read status and backlog, report state, ask
 - kickoff - Phase 0 to 4 for a new project
 - plan - requirement, question rounds and implementation plan for one backlog item
+- debug - reproduce a bug with one exact command, isolate root cause, prove with a failing test, fix
 - implement - build one `ready` item end to end, through to merge and the user's check
 - review - the independent review rounds for the item's kind, each followed by fixes
 - checkpoint - status update, merge the pull request, sync with GitHub

@@ -86,6 +86,23 @@ and in CI, not just when someone remembers.
   it passes and move on. Tests that share a user or a row often clash when they run in
   parallel - give each its own data, or run that group one at a time.
 
+## Probe new tests (prove they can fail)
+
+An agent writing code and tests in the same pass can write a test that passes no
+matter what — because it asserts the wrong value, hits a fake instead of real logic,
+or never triggers the new branch. Prove new tests have teeth before asking for review:
+
+1. Pick up to **three** newly added or updated tests in this PR that cover the core
+   behaviour or bug fix.
+2. Temporarily break **one line or guard** in the production code each test claims to
+   cover (flip a condition, drop a check, or return the wrong value).
+3. Run those targeted tests and confirm they fail for the expected reason.
+4. Restore the broken line byte-for-byte (`git diff` on production code shows zero
+   probe edits) and re-run `scripts/verify.sh` so everything is green.
+
+If a test still passes when the behaviour it checks is broken, the test is testing
+nothing. Fix the test before opening the pull request.
+
 ## Screenshots as evidence
 
 Where a requirement lists screenshots in its evidence section, an end-to-end script

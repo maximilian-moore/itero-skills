@@ -120,7 +120,7 @@ nested deeper.
 
 **Slash commands collide.** The manual Claude Code install copies every command file
 into your commands directory unnamespaced - for `max-coding-workflow` that is `start`,
-`kickoff`, `plan`, `implement`, `review`, `checkpoint` and `handover`. If you already have commands
+`kickoff`, `plan`, `debug`, `implement`, `review`, `checkpoint` and `handover`. If you already have commands
 by those names, use the marketplace install instead, which namespaces them, or rename
 them.
 
