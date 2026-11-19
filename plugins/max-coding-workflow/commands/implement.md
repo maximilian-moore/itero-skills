@@ -74,7 +74,9 @@ saw into the Gotchas section of `project-status.md` and ask the user how to proc
 
 ## 6. Verify
 
-Run the verify command. It must exit clean. Never ask for review on a red build.
+Probe up to three new tests (`references/testing.md`) to prove they fail when the
+covered code breaks, restore cleanly, then run the verify command. It must exit clean.
+Never ask for review on a red build.
 
 ## 7. Open the pull request
 

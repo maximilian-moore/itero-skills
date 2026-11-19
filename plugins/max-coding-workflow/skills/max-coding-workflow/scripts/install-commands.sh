@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install the ritual shortcuts of max-coding-workflow (/start, /kickoff, /plan,
-# /implement, /review, /checkpoint, /handover) into the current project, for tools that
+# /debug, /implement, /review, /checkpoint, /handover) into the current project, for tools that
 # read project command files from .claude/commands/ (Claude Code).
 #
 # Needed when the skill folder was linked or copied into a project on its own, without

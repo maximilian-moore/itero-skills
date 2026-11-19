@@ -16,7 +16,8 @@ requirement) and after it (the human check).
    Commit after each working step and push regularly.
 4. Build test-first where the requirement names a test. Each test carries its ID
    (`BL-XXX-T01`) in its title.
-5. Run `scripts/verify.sh`. All green. Never weaken, skip or delete a test to get there.
+5. Probe up to three new tests to prove they fail when the code breaks, then run
+   `scripts/verify.sh`. All green. Never weaken, skip or delete a test to get there.
 6. Open a pull request. Run the review rounds for an autonomous run in
    `references/review.md` of the max-coding-workflow skill: round 1 correctness and
    security in parallel, fix, round 2 correctness, fix.

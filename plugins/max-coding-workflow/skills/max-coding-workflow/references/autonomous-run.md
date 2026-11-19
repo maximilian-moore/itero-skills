@@ -56,7 +56,8 @@ discussion; the run needs the files, not the discussion.
 3. Branch, set the item to `implementation`, commit.
 4. Build test-first where the requirement names a test. Commit after each working
    step, and push regularly, so a run that dies leaves its work on GitHub.
-5. Verify, open the pull request, run the review rounds (`references/review.md`).
+5. Probe up to three new tests (`references/testing.md`), run verify, open the pull
+   request, run the review rounds (`references/review.md`).
 6. Merge, deploy, take the evidence, write the check sheet (below).
 
 ## When something is missing: the blocker protocol
