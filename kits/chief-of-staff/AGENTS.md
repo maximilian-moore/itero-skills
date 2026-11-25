@@ -69,7 +69,14 @@ the folder, git repo, and kickoff lead.
 
 1. Check `registry.md`: project path, lead harness/model, active sessions. Respect `max_parallel_leads`.
 2. Start a new lead session in the project (or an isolated `git worktree` if parallel work is active),
-   using the execution mode in `routing.md` (CLI runner like `claude`/`codex`/`opencode`, native subagent, or optional orchestrator). One backlog item per session.
+   using the execution mode in `routing.md`:
+   - **Claude Code**: `claude -p "<prompt>" --cwd <repo_or_worktree>` or native `Agent` with `isolation: "worktree"`
+   - **Google Antigravity (AGY)**: `invoke_subagent` / `self` with `Workspace: "branch"`, or `agy` command
+   - **Cursor**: open project or worktree in a window; launch in Composer (Agent mode)
+   - **Codex**: `codex exec -C <repo_or_worktree> "<prompt>"` or `spawn_agent`
+   - **OpenCode**: `opencode run --dir <repo_or_worktree> "<prompt>"`
+   - *(Optional orchestrator: `t3_thread_launch`)*
+   One backlog item per session.
 3. The launch prompt is:
 
    ```
@@ -79,8 +86,8 @@ the folder, git repo, and kickoff lead.
    Decisions on record for this task: <D-ids or none>.
    ```
 
-4. Record the session/thread reference and item in `registry.md`.
-5. Send follow-ups or answers to a running/paused lead using your harness's resume/send mechanism (see `routing.md`).
+4. Record the session/thread/process reference and item in `registry.md`.
+5. Send follow-ups or answers to a running/paused lead using your harness's resume/send mechanism, subagent messaging, or by replying to the inbox item (see `routing.md`).
 
 ## Handling a lead's question
 

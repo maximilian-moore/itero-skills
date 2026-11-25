@@ -26,7 +26,7 @@ Your Chief of Staff coordinates work across all your project repositories:
 
 This kit is built for **builders, operators, founders, and solo makers** managing two or more software projects with AI coding agents.
 
-If you use AI tools like Claude Code, OpenAI Codex, OpenCode, Cursor, Antigravity, or T3 Code, you want agents to make steady progress without stalling. At the same time, you cannot afford to hand over blind trust on critical decisions (security, data storage, user-facing behavior, or money). 
+If you use AI tools like Claude Code, Google Antigravity (AGY), Cursor, OpenAI Codex, or OpenCode, you want agents to make steady progress without stalling. At the same time, you cannot afford to hand over blind trust on critical decisions (security, data storage, user-facing behavior, or money). 
 
 The Chief of Staff kit gives you the sweet spot: **autonomous execution with calibrated human oversight**.
 
@@ -54,22 +54,110 @@ When operating under HQ, the project lead follows `PROTOCOL.md`:
 
 ---
 
-## Works across any harness (Harness-agnostic)
+## Works across any harness (100% Standalone)
 
-HQ relies entirely on plain Markdown files, git worktrees, and shell commands. It does not require a proprietary agent server, cloud daemon, or complex database.
+HQ relies entirely on plain Markdown files, git worktrees, and shell commands. It does not require a proprietary agent server, cloud daemon, or external database.
 
-You can run HQ in whichever environment you prefer:
+You can run HQ directly in whichever tool you prefer:
 
-| Execution mode | How HQ launches Project Leads | How HQ sends follow-ups / answers |
-|---|---|---|
-| **Claude Code CLI** | `claude -p "<prompt>" --cwd <repo_or_worktree>` | `claude -p "<answer>" --resume <session_id>` |
-| **Codex CLI** | `codex exec -C <repo_or_worktree> "<prompt>"` | `codex exec resume <session_id> "<answer>"` |
-| **OpenCode CLI** | `opencode run --dir <repo_or_worktree> "<prompt>"` | `opencode run --dir <repo_or_worktree> --session <id> "<answer>"` |
-| **Native Subagents** | Subagent tool (`Agent` with `isolation: "worktree"`, `spawn_agent`, etc.) | Resume / message that subagent |
-| **Cursor / Antigravity / IDEs** | Run HQ in one workspace window; open project checkouts in separate windows | Update inbox or handover files |
-| **T3 Code (optional)** | `t3_thread_launch` (or `t3 thread start`) | `t3_thread_send` |
+| Harness | Launch a Project Lead | Resume / send answer | Parallel isolation |
+|---|---|---|---|
+| **Claude Code** | `claude -p "<prompt>" --cwd <repo_or_worktree>` or native `Agent` | `claude -p "<answer>" --resume <session_id>` or message subagent | `isolation: "worktree"` or `git worktree` |
+| **Google Antigravity (AGY)** | `invoke_subagent` (`Workspace: "branch"` or `"share"`), or `agy` CLI | Message subagent or update inbox item | Branch/share workspace or `git worktree` |
+| **Cursor** | Open project / worktree in separate window; run in Composer | Paste decision or save to `_hq/inbox/` | Separate window per `git worktree` |
+| **OpenAI Codex** | `codex exec -C <repo_or_worktree> "<prompt>"` or `spawn_agent` | `codex exec resume <session_id> "<answer>"` | `git worktree` |
+| **OpenCode** | `opencode run --dir <repo_or_worktree> "<prompt>"` | `opencode run --dir <repo_or_worktree> --session <id> "<answer>"` | `git worktree` |
+| *Orchestrator (optional)* | *`t3_thread_launch` (or `t3 thread start`)* | *`t3_thread_send`* | *Worktree strategy* |
 
-All modes share the same file conventions and decision policies. You can switch tools or mix models whenever you like.
+---
+
+## Standalone setups: Step-by-step guides
+
+### 1. Claude Code Standalone
+Run Claude Code directly in your terminal without any external UI:
+1. **Chief of Staff session:** Start Claude in your `_hq/` directory:
+   ```bash
+   cd ~/DevProjects/_hq && claude
+   ```
+2. **Dispatching Project Leads:** HQ dispatches a lead in a repository or worktree non-interactively:
+   ```bash
+   claude -p "HQ launch. Project: web-client. First read ~/DevProjects/_hq/PROTOCOL.md..." --cwd ~/DevProjects/web-client
+   ```
+   Or use native subagents with the `Agent` tool (`isolation: "worktree"`).
+3. **Question handling:** The lead writes questions to `_hq/inbox/`. HQ reviews them during status updates or briefs.
+4. **Resuming:** Deliver answers with:
+   ```bash
+   claude -p "D-0014: Option B approved" --resume <session_id>
+   ```
+
+### 2. Google Antigravity (AGY) Standalone
+Run Antigravity using the IDE or the `agy` CLI:
+1. **Chief of Staff session:** Open the `_hq/` directory as your active workspace in Antigravity.
+2. **Dispatching Project Leads:** Launch child leads using native subagent capabilities:
+   - Invoke subagents configured for specific projects with isolated workspace modes (`Workspace: "branch"` or `Workspace: "share"`).
+   - Alternatively, execute background tasks in project directories via the terminal.
+3. **Question handling:** Project Leads follow `PROTOCOL.md` and file questions into `_hq/inbox/`.
+4. **Answering:** HQ inspects `inbox/`, applies the decision policy, and updates the subagent or inbox status directly.
+
+### 3. Cursor Standalone
+Run HQ seamlessly across multi-window Cursor setups:
+1. **Chief of Staff session:** Open `_hq/` in a dedicated Cursor workspace window. Talk to your Chief of Staff in Composer or Chat.
+2. **Dispatching Project Leads:** Open each project repository (or git worktree) in its own Cursor window.
+3. **Starting work:** Paste the standard launch prompt into Composer (Agent mode):
+   ```text
+   HQ launch. Project: mobile-app.
+   First read ~/DevProjects/_hq/PROTOCOL.md, then this repo's rules file.
+   Task: run /start and propose the next ready item.
+   Decisions on record for this task: none.
+   ```
+4. **Question handling:** When the lead needs an approval or architectural decision, it writes to `_hq/inbox/<project>-<slug>.md` and stops.
+5. **Decisions:** In your `_hq/` window, Chief of Staff reads open inbox files, prepares your daily brief, and records decisions in `decisions.md`. You or HQ provide the chosen option back to the project Composer.
+
+### 4. OpenAI Codex Standalone
+Run Codex directly via the CLI:
+1. **Chief of Staff session:** Start Codex in `_hq/`:
+   ```bash
+   cd ~/DevProjects/_hq && codex
+   ```
+2. **Dispatching Project Leads:** Execute non-interactive lead commands:
+   ```bash
+   codex exec -C ~/DevProjects/backend-api "HQ launch. Project: backend-api..."
+   ```
+   Or use native `spawn_agent`.
+3. **Resuming:** Send answers or follow-up instructions via:
+   ```bash
+   codex exec resume <session_id> "D-0021: Proceed with SQLite cache"
+   ```
+
+### 5. OpenCode Standalone
+Run OpenCode in terminal:
+1. **Chief of Staff session:** Start OpenCode in `_hq/`:
+   ```bash
+   cd ~/DevProjects/_hq && opencode
+   ```
+2. **Dispatching Project Leads:** Run tasks in project directories:
+   ```bash
+   opencode run --dir ~/DevProjects/web-client "HQ launch. Project: web-client..."
+   ```
+3. **Resuming:** Resume with:
+   ```bash
+   opencode run --dir ~/DevProjects/web-client --session <id> "Answer to question"
+   ```
+
+---
+
+## Parallel Work with Git Worktrees
+
+To run parallel leads on the same codebase without collisions or lockfile conflicts, create an isolated `git worktree`:
+
+```bash
+# Create an isolated checkout on a new branch
+git -C ~/DevProjects/my-app worktree add ../my-app-BL-012 -b feat/BL-012
+
+# Run your lead agent inside that worktree directory
+# When the pull request is merged, clean up
+git -C ~/DevProjects/my-app worktree remove ../my-app-BL-012
+```
 
 ---
 
@@ -204,7 +292,7 @@ You interact with HQ through concise daily summaries or on-demand status checks.
 
 ### The brief format
 
-When you request a update (or on a morning schedule), HQ presents a clean, scannable brief:
+When you request an update (or on a morning schedule), HQ presents a clean, scannable brief:
 
 ```text
 1. Needs you:
@@ -291,8 +379,9 @@ Edit `_hq/registry.md` to list your active repositories, their paths, rules file
 ### 4. Choose your execution mode
 Open `_hq/routing.md` and select how you want HQ to launch leads:
 - Standalone CLI runner (`claude`, `codex`, `opencode`)
-- Native subagents (`isolation: "worktree"`)
-- Or an orchestrator (such as T3 Code)
+- Native subagents in Antigravity or Claude Code
+- Multi-window workspace in Cursor
+- *(Optional orchestrator if you use one)*
 
 ### 5. Install the git push safety guard
 Run the helper script to protect your repositories from destructive commands:
