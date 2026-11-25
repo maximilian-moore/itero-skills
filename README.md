@@ -17,7 +17,7 @@ Built by [Max Moore](https://itero-digital.com).
 | [`multi-agent-coding`](#multi-agent-coding-framework) | A collaborative, repo-first process for teams and multiple AI coding agents | v1.0.0 |
 
 More are coming. Each one lives in its own folder and installs independently, so you
-can take one without taking all of them.
+can take one without taking all of them. Looking for multi-project orchestration across repositories? See [Workspace Kits](#workspace-kits).
 
 ---
 
@@ -163,6 +163,39 @@ logs, repeating the same expensive debugging mistakes, and racking up untracked 
 
 ---
 
+## Workspace Kits
+
+File-based orchestration setups that live at your workspace root (`_hq/`) across
+multiple repositories, rather than installing as agent skills inside a single repo.
+
+| Kit | What it does | Status |
+|---|---|---|
+| [`chief-of-staff`](#chief-of-staff-hq) | Multi-project AI coordination, decision routing, and autonomy engine | v1.0.0 |
+
+---
+
+### Chief of Staff (HQ)
+
+`chief-of-staff` · [Full human guide](docs/chief-of-staff.md) · [Kit files](kits/chief-of-staff/)
+
+A file-based, harness-agnostic Chief of Staff that sits at your workspace root (`_hq/`)
+and coordinates AI coding agents across all your repositories.
+
+Works out of the box with Claude Code, Codex, OpenCode, Cursor, Antigravity, or T3 Code.
+
+**What it gives you**
+
+- Talk to **one coordinator** (`_hq/`) instead of juggling dozens of terminal tabs or chat sessions
+- An autonomy ladder (`ask` -> `propose` -> `decide` and inform) with three decision tiers and a strict never-auto list
+- An Owner Judgment Profile (`decision-profile.md`) that learns your personal architectural and product tastes from your answers
+- Seamless pairing with `max-coding-workflow`: project leads route questions to `_hq/inbox/` instead of stalling or interrupting your work
+- Structured daily briefs with shorthand reply parsing (e.g. `1A 2B: simpler UX`)
+- Role routing tiers (`route`, `judge`, `lead`, `build`, `review`, `fast`) with adversarial cross-family code reviews and isolated git worktrees
+
+**Setup:** Copy `kits/chief-of-staff/` to your workspace root as `_hq/`, configure your project paths in `_hq/registry.md`, and start with `start`. See the [Full human guide](docs/chief-of-staff.md) for details.
+
+---
+
 ## Install
 
 ### Claude Code
@@ -243,12 +276,13 @@ skill here depends on its hook having fired.
 
 ```
 .claude-plugin/marketplace.json    marketplace manifest, one entry per plugin
-plugins/<plugin>/                  one folder per plugin
+kits/<kit>/                        workspace kits (e.g. chief-of-staff)
+plugins/<plugin>/                  one folder per plugin (Agent Skills)
   skills/<skill>/SKILL.md          the canonical skill
   commands/                        slash commands, where supported
   hooks/                           session-start hook, Node plus a shell fallback
 install/                           one script per host tool
-docs/                              install guide and contributor notes
+docs/                              human guides, install guide and contributor notes
 AGENTS.md                          how an agent should install from this repo
 ```
 
